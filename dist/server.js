@@ -17,10 +17,15 @@ const config_1 = __importDefault(require("./app/config"));
 const mongoose_1 = __importDefault(require("mongoose"));
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield mongoose_1.default.connect(config_1.default.DATABASE_URL);
-        app_1.default.listen(config_1.default.PORT, () => {
-            console.log(`Example app listening on port ${config_1.default.PORT}`);
-        });
+        try {
+            yield mongoose_1.default.connect(config_1.default.DATABASE_URL);
+            app_1.default.listen(config_1.default.PORT, () => {
+                console.log(`Example app listening on port ${config_1.default.PORT}`);
+            });
+        }
+        catch (error) {
+            console.log(error);
+        }
     });
 }
 main();
