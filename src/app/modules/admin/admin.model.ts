@@ -5,6 +5,7 @@ const adminSchema = new Schema<Admin>({
 
   id: {
     type: String,
+    unique: true
 
   },
   name: {
