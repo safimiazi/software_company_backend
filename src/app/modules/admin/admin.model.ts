@@ -1,5 +1,5 @@
-import { Schema } from "mongoose";
-import { Admin } from "./admin.interface";
+import { model, Schema } from "mongoose";
+import {  Admin } from "./admin.interface";
 
 const adminSchema = new Schema<Admin>({
 
@@ -32,3 +32,6 @@ const adminSchema = new Schema<Admin>({
   },
 
 });
+
+
+export const adminModel = model<Admin>('Admin', adminSchema);
