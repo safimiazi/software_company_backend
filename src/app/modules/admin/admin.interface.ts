@@ -1,4 +1,4 @@
-export type Admin = {
+export type TAdmin = {
     id: string; // Unique identifier for the admin
     name: string; // Admin's full name
     email: string; // Admin's email address

@@ -1,7 +1,16 @@
 import { model, Schema } from "mongoose";
-import { Admin } from "./admin.interface";
+import { TAdmin } from "./admin.interface";
+import { Model } from "mongoose";
 
-const adminSchema = new Schema<Admin>({
+
+interface IAdminMethods {
+  isExist(id :string): Promise<TAdmin | null>;
+}
+
+type TAdminModel = Model<TAdmin, object, IAdminMethods>;
+
+
+const adminSchema = new Schema<TAdmin, TAdminModel, IAdminMethods>({
   id: {
     type: String,
     unique: true,
@@ -36,4 +45,9 @@ const adminSchema = new Schema<Admin>({
   },
 });
 
-export const adminModel = model<Admin>("Admin", adminSchema);
+adminSchema.method('isExist', function (id: string){
+  const isExistUser =  adminModel.findOne({id})
+  return isExistUser;
+})
+
+export const adminModel = model<TAdmin, TAdminModel>("Admin", adminSchema);
