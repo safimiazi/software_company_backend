@@ -1,20 +1,9 @@
 import { model, Schema } from "mongoose";
 import { TAdmin } from "./admin.interface";
-import { Model } from "mongoose";
+import bcrypt from "bcrypt";
+import config from "../../config";
 
-
-interface IAdminMethods {
-  isExist(id :string): Promise<TAdmin | null>;
-}
-
-type TAdminModel = Model<TAdmin, object, IAdminMethods>;
-
-
-const adminSchema = new Schema<TAdmin, TAdminModel, IAdminMethods>({
-  id: {
-    type: String,
-    unique: true,
-  },
+const adminSchema = new Schema<TAdmin>({
   name: {
     type: String,
     required: [true, "First Name is required"],
@@ -28,6 +17,10 @@ const adminSchema = new Schema<TAdmin, TAdminModel, IAdminMethods>({
     },
   },
   email: {
+    type: String,
+    required: true,
+  },
+  password: {
     type: String,
     required: true,
   },
@@ -45,9 +38,14 @@ const adminSchema = new Schema<TAdmin, TAdminModel, IAdminMethods>({
   },
 });
 
-adminSchema.method('isExist', function (id: string){
-  const isExistUser =  adminModel.findOne({id})
-  return isExistUser;
-})
+adminSchema.pre("save", async function (next) {
+  this.password = await bcrypt.hash(this.password, config.SALT);
+  next();
+});
 
-export const adminModel = model<TAdmin, TAdminModel>("Admin", adminSchema);
+adminSchema.post("save", async function (doc, next) {
+  doc.password = "";
+  next();
+});
+
+export const adminModel = model<TAdmin>("Admin", adminSchema);

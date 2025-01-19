@@ -3,6 +3,10 @@ import express from "express"
 import { adminControllers } from "./admin.controller"
 const router = express.Router()
 
-router.post('/create_admin', adminControllers.createAdmin)
+// Registration route
+router.post("/registration",  adminControllers.registration);
+
+// Login route
+// router.post("/login", adminControllers.login);
 
 export const adminRoutes = router;

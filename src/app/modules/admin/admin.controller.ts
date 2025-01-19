@@ -1,25 +1,28 @@
 import { Request, Response } from "express";
 import { adminServices } from "./admin.service";
-import { adminValidationSchema } from "./admin.validation";
 
-const createAdmin = (req: Request, res: Response) => {
+const registration = async (req: Request, res: Response) => {
   try {
-    const {admin} = req.body;
+    // Extract data from request body
+    const data = req.body;
 
-    const validatedAdmin = adminValidationSchema.parse(admin)
+    // Register the admin in the database
+    const result = await adminServices.registrationIntoDB(data);
 
-    const result = adminServices.createAdminIntoDB(validatedAdmin);
-    res.status(200).json({
+    // Send a success response
+    res.status(201).json({
       success: true,
-      message: "Admin is created successfully.",
       data: result,
     });
   } catch (error) {
-    console.log(error);
+    // Send an error response
+    res.status(400).json({
+      success: false,
+      error: error instanceof Error ? error.message : "An error occurred",
+    });
   }
 };
 
-
 export const adminControllers = {
-    createAdmin
-}
+  registration,
+};

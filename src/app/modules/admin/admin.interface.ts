@@ -1,9 +1,10 @@
 export type TAdmin = {
-    id: string; // Unique identifier for the admin
     name: string; // Admin's full name
     email: string; // Admin's email address
-    phone: string; // Admin's phone number
-    createdAt: Date; // Date the admin was added
-    updatedAt?: Date; // Last updated date (optional)
-    picture?: string; // URL of the admin's profile picture (optional)
-};
+    password: string; // Admin's password
+    phone?: string; // Optional phone number
+    picture?: string; // Optional profile picture URL
+    createdAt?: Date; // Creation date (optional, auto-generated)
+    updatedAt?: Date; // Update date (optional, auto-generated)
+  };
+  
