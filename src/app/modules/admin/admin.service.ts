@@ -1,14 +1,19 @@
 import { TAdmin } from "./admin.interface";
 import { adminModel } from "./admin.model";
 
-const registrationIntoDB = async (data: TAdmin) => {
+const create_admin_into_db = async (data: TAdmin) => {
   try {
-    // Create a new admin document
-    const admin = new adminModel(data);
+    const adminData = {
+      ...data,
+      role: "admin",
+    };
 
-    // Save to database
-    const result = await admin.save();
-    return result;
+    // Create a new admin document
+    const newAdmin = new adminModel(adminData);
+
+    // Save to the database
+    const savedAdmin = await newAdmin.save();
+    return savedAdmin;
   } catch (error) {
     console.error("Error while saving admin:", error);
     throw new Error("Failed to register admin.");
@@ -16,5 +21,5 @@ const registrationIntoDB = async (data: TAdmin) => {
 };
 
 export const adminServices = {
-  registrationIntoDB,
+  create_admin_into_db,
 };

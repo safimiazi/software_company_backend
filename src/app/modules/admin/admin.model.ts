@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 import { TAdmin } from "./admin.interface";
-
+import bcrypt from "bcrypt";
 
 const adminSchema = new Schema<TAdmin>({
   name: { type: String, required: true },
@@ -15,6 +15,18 @@ const adminSchema = new Schema<TAdmin>({
   picture: { type: String },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
+});
+
+adminSchema.pre("save", async function (next) {
+  this.password = await bcrypt.hash(this.password, 10);
+
+  next();
+});
+
+adminSchema.post("save", async function (doc, next) {
+  doc.password = "";
+
+  next();
 });
 
 export const adminModel = model<TAdmin>("Admin", adminSchema);

@@ -1,22 +1,29 @@
 import { z } from "zod";
 
 export const adminValidationSchema = z.object({
-    id: z.string().uuid("Invalid UUID for id"),
-    name: z.string().min(1, 'Name is required'),
-    email: z.string().email("Invalid email address"),
-    password: z.string().min(8, "Password must be 8 charachters."),
-    phone: z.string().regex(/^[0-9]{10,15}$/, "Invalid phone number"),
-    createdAt: z.date(),
-    updateAt : z.date().optional(),
-    picture: z.string().url("Invalid URL for picture").optional()
- 
-});
-
-
-export const adminRegistrationSchema = z.object({
-    name: z.string().min(1, 'Name is required'),
-    email: z.string().email("Invalid email address"),
-    password: z.string().min(8, "Password must be 8 charachters."),
-    phone: z.string().regex(/^[0-9]{10,15}$/, "Invalid phone number"),
- 
+  name: z
+    .string()
+    .min(1, { message: "Name is required" })
+    .max(100, { message: "Name must not exceed 100 characters" }),
+  email: z
+    .string()
+    .email({ message: "Invalid email address" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters long" }),
+  needsPasswordChange: z.boolean().optional(),
+  passwordChangeAt: z.date().optional(),
+  role: z.enum(["admin", "employee"], {
+    message: "Role must be either 'admin' or 'employee'",
+  }),
+  status: z.enum(["active", "blocked"], {
+    message: "Status must be either 'active' or 'blocked'",
+  }),
+  isDeleted: z.boolean().optional(),
+  phone: z
+    .string()
+    .regex(/^\d{10,15}$/, { message: "Phone number must be 10-15 digits" }),
+  picture: z.string().url({ message: "Picture must be a valid URL" }).optional(),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional(),
 });

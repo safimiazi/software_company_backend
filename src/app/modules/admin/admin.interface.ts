@@ -5,7 +5,7 @@ export type TAdmin = {
   password: string;
   needsPasswordChange: boolean;
   passwordChangeAt: Date;
-  role: "superAdmin" | "admin" | "employee";
+  role: "admin" | "employee";
   status: "active" | "blocked";
   isDeleted: boolean;
 
