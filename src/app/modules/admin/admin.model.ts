@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { model, Schema } from "mongoose";
-import { TAdmin } from "./admin.interface";
+import { TAdmin, TAdminModel } from "./admin.interface";
 import bcrypt from "bcrypt";
 
-const adminSchema = new Schema<TAdmin>({
+
+
+const adminSchema = new Schema<TAdmin, TAdminModel>({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
@@ -29,4 +33,14 @@ adminSchema.post("save", async function (doc, next) {
   next();
 });
 
-export const adminModel = model<TAdmin>("Admin", adminSchema);
+adminSchema.static('isAdminExist', async function (email: string) {
+  try {
+    const result = await this.findOne({ email });
+    return result;
+  } catch (error : any) {
+    throw new Error("Failed to check admin existence.");
+  }
+});
+
+
+export const adminModel = model<TAdmin, TAdminModel>("Admin", adminSchema);

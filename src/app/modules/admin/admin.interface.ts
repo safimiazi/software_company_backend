@@ -1,3 +1,5 @@
+import { Model } from "mongoose";
+
 export type TAdmin = {
   name: string;
 
@@ -14,3 +16,10 @@ export type TAdmin = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+
+
+export interface TAdminModel extends Model<TAdmin> {
+  isAdminExist(email: string): Promise<TAdmin | null>;
+}
+

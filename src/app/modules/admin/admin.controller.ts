@@ -1,7 +1,13 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { adminServices } from "./admin.service";
+import sendResponse from "../../utils/sendResponse";
+import status from "http-status";
 
-const create_admin = async (req: Request, res: Response) => {
+const create_admin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     // Extract data from request body
     const data = req.body;
@@ -10,16 +16,14 @@ const create_admin = async (req: Request, res: Response) => {
     const result = await adminServices.create_admin_into_db(data);
 
     // Send a success response
-    res.status(201).json({
+    sendResponse(res, {
+      statusCode: status.OK,
       success: true,
+      message: "Admin is created succesfully.",
       data: result,
     });
   } catch (error) {
-    // Send an error response
-    res.status(400).json({
-      success: false,
-      error: error instanceof Error ? error.message : "An error occurred",
-    });
+    next(error);
   }
 };
 
