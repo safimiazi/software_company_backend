@@ -17,9 +17,6 @@ export type TAdmin = {
   updatedAt: Date;
 };
 
-
-
 export interface TAdminModel extends Model<TAdmin> {
   isAdminExist(email: string): Promise<TAdmin | null>;
 }
-
