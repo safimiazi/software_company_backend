@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import catchAsync from "../utils/catchAsync";
+import { AnyZodObject } from "zod";
 
-export function validateRequest(schema: any) {
-  return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+export function validateRequest(schema: AnyZodObject) {
+  return catchAsync(async (req: Request, res: Response) => {
     await schema.parseAsync(req.body);
-    next();
+    
   });
 }
