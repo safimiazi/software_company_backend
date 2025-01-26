@@ -16,6 +16,7 @@ const create_admin = catchAsync(async (req, res) => {
     success: true,
     message: "Admin is created succesfully.",
     data: result,
+    
   });
 });
 
