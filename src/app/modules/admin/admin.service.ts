@@ -2,9 +2,7 @@ import { TAdmin } from "./admin.interface";
 import { adminModel } from "./admin.model";
 
 const create_admin_into_db = async (data: TAdmin) => {
-  try {
-
-
+ 
     // Check if the admin already exists
     const existingAdmin = await adminModel.isAdminExist(data.email);
     if (existingAdmin) {
@@ -26,10 +24,7 @@ const create_admin_into_db = async (data: TAdmin) => {
     // Save to the database
     const savedAdmin = await newAdmin.save();
     return savedAdmin;
-  } catch (error) {
-    console.error("Error while saving admin:", error);
-    throw new Error("Failed to register admin.");
-  }
+ 
 };
 
 export const adminServices = {
