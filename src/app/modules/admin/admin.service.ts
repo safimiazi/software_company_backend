@@ -9,7 +9,7 @@ const create_admin_into_db = async (data: TAdmin) => {
     const existingAdmin = await adminModel.isAdminExist(data.email);
 
     if (existingAdmin) {
-      throw new AppError(status.CONFLICT,`Admin already exists.`);
+      throw new AppError(status.CONFLICT,`Admin already exists, please login.`);
     }
 
 
