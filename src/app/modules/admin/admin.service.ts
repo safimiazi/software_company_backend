@@ -1,35 +1,18 @@
-import status from "http-status";
-import AppError from "../../errors/AppError";
 import { TAdmin } from "./admin.interface";
 import { adminModel } from "./admin.model";
 
 const create_admin_into_db = async (data: TAdmin) => {
- 
-    // Check if the admin already exists
-    const existingAdmin = await adminModel.isAdminExist(data.email);
+  const adminData = {
+    ...data,
+    role: "admin",
+  };
 
-    if (existingAdmin) {
-      throw new AppError(status.CONFLICT,`Admin already exists, please login.`);
-    }
+  // Create a new admin document
+  const newAdmin = new adminModel(adminData);
 
-    
-
-
-    const adminData = {
-      ...data,
-      role: "admin",
-    };
-
-    
-    
-
-    // Create a new admin document
-    const newAdmin = new adminModel(adminData);
-
-    // Save to the database
-    const savedAdmin = await newAdmin.save();
-    return savedAdmin;
- 
+  // Save to the database
+  const savedAdmin = await newAdmin.save();
+  return savedAdmin;
 };
 
 export const adminServices = {

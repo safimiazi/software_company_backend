@@ -3,8 +3,8 @@
 import { model, Schema } from "mongoose";
 import { TAdmin, TAdminModel } from "./admin.interface";
 import bcrypt from "bcrypt";
-
-
+import AppError from "../../errors/AppError";
+import status from "http-status";
 
 const adminSchema = new Schema<TAdmin, TAdminModel>({
   name: { type: String, required: true },
@@ -33,14 +33,12 @@ adminSchema.post("save", async function (doc, next) {
   next();
 });
 
-adminSchema.static('isAdminExist', async function (email: string) {
-  try {
-    const result = await this.findOne({ email });
-    return result;
-  } catch (error : any) {
-    throw new Error("Failed to check admin existence.");
+adminSchema.pre("save", async function (next) {
+  const result = await adminModel.findOne({ email: this.email });
+  if (result) {
+    throw new AppError(status.CONFLICT, `Admin already exists, please login.`);
   }
+  next();
 });
-
 
 export const adminModel = model<TAdmin, TAdminModel>("Admin", adminSchema);
