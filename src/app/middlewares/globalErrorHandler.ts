@@ -8,6 +8,8 @@ import express, {
   Response,
 } from "express";
 import status from "http-status";
+import { TErrorSource } from "../interface/error";
+import { ZodError } from "zod";
 
 const globalErrorHandler: ErrorRequestHandler = (
   err,
@@ -15,20 +17,38 @@ const globalErrorHandler: ErrorRequestHandler = (
   res,
   next: NextFunction
 ) => {
-  const statusCode = status.INTERNAL_SERVER_ERROR;
-  const meassage = err?.message || "Something went wrong.";
+  let statusCode: string | number = status.INTERNAL_SERVER_ERROR;
+  let meassage = err?.message || "Something went wrong.";
 
-  type TErrorSource = {
-    path: string | number;
-    message: string;
-  };
-
-  const errorSource: TErrorSource[] = [
+  let errorSource: TErrorSource[] = [
     {
       path: "",
       message: "Something went wrong",
     },
   ];
+
+  const handleZodError = (err: ZodError) => {
+    const errorSource: TErrorSource[] = err.issues.map((issue) => {
+      return {
+        path: issue?.path[issue.path.length - 1],
+        message: issue.message,
+      };
+    });
+    const statusCode = 400;
+
+    return {
+      statusCode,
+      message: "Validation error",
+      errorSource,
+    };
+  };
+
+  if (err instanceof ZodError) {
+    const simplifiedErrors = handleZodError(err);
+    statusCode = simplifiedErrors?.statusCode;
+    meassage = simplifiedErrors?.message;
+    errorSource = simplifiedErrors?.errorSource;
+  }
 
   res.status(statusCode).json({
     success: false,
