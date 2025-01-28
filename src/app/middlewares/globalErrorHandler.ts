@@ -44,6 +44,8 @@ const globalErrorHandler: ErrorRequestHandler = (
     errorSource = simplifiedError?.errorSource;
   }
 
+
+
   res.status(statusCode).json({
     success: false,
     meassage,
