@@ -10,6 +10,7 @@ import express, {
 import status from "http-status";
 import { TErrorSource } from "../interface/error";
 import { ZodError } from "zod";
+import config from "../config";
 
 const globalErrorHandler: ErrorRequestHandler = (
   err,
@@ -54,6 +55,7 @@ const globalErrorHandler: ErrorRequestHandler = (
     success: false,
     meassage,
     errorSource,
+    stack: config.node_env === "development" ? err?.stack : undefined,
   });
 };
 
