@@ -12,6 +12,8 @@ const create_admin_into_db = async (data: TAdmin) => {
       throw new AppError(status.CONFLICT,`Admin already exists, please login.`);
     }
 
+    
+
 
     const adminData = {
       ...data,
