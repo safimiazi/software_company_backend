@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import express, { Application, NextFunction, Request, Response } from "express";
+import express, { Application, ErrorRequestHandler, NextFunction, Request, Response } from "express";
 import status from "http-status";
 
-const globalErrorHandler = (
-  err: any,
-  req: Request,
-  res: Response,
+const globalErrorHandler: ErrorRequestHandler = (
+  err,
+  req,
+  res,
   next: NextFunction
 ) => {
 
