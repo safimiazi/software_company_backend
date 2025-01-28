@@ -21,18 +21,21 @@ const adminSchema = new Schema<TAdmin, TAdminModel>({
   updatedAt: { type: Date, default: Date.now },
 });
 
+// hash password before saving
 adminSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, 10);
 
   next();
 });
 
+//remove password from response
 adminSchema.post("save", async function (doc, next) {
   doc.password = "";
 
   next();
 });
 
+// check if admin already exists
 adminSchema.pre("save", async function (next) {
   const result = await adminModel.findOne({ email: this.email });
   if (result) {
