@@ -11,6 +11,7 @@ import status from "http-status";
 import { TErrorSource } from "../interface/error";
 import { ZodError } from "zod";
 import config from "../config";
+import handleZodError from "../errors/handleZodError";
 
 const globalErrorHandler: ErrorRequestHandler = (
   err,
@@ -20,7 +21,6 @@ const globalErrorHandler: ErrorRequestHandler = (
 ) => {
   let statusCode: string | number = status.INTERNAL_SERVER_ERROR;
   let meassage = err?.message || "Something went wrong.";
-
   let errorSource: TErrorSource[] = [
     {
       path: "",
@@ -28,22 +28,8 @@ const globalErrorHandler: ErrorRequestHandler = (
     },
   ];
 
-  const handleZodError = (err: ZodError) => {
-    const errorSource: TErrorSource[] = err.issues.map((issue) => {
-      return {
-        path: issue?.path[issue.path.length - 1],
-        message: issue.message,
-      };
-    });
-    const statusCode = 400;
 
-    return {
-      statusCode,
-      message: "Validation error",
-      errorSource,
-    };
-  };
-
+// handle zod error
   if (err instanceof ZodError) {
     const simplifiedErrors = handleZodError(err);
     statusCode = simplifiedErrors?.statusCode;
