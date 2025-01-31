@@ -1,3 +1,5 @@
+import status from "http-status";
+import AppError from "../../errors/AppError";
 import { TAdmin } from "./admin.interface";
 import { adminModel } from "./admin.model";
 
@@ -18,7 +20,9 @@ const create_admin_into_db = async (data: TAdmin) => {
 
 const login_admin_into_db = async (data: TAdmin) => {
   const isAdminExist = await adminModel.findOne({ email: data.email });
-  console.log(isAdminExist);
+  if (!isAdminExist) {
+    throw new AppError(status.NOT_FOUND, "Admin is not found.");
+  }
 };
 
 export const adminServices = {
