@@ -19,6 +19,11 @@ const create_admin = catchAsync(async (req, res) => {
   });
 });
 
+const login_admin =catchAsync(async(req, res)=> {
+  const data = req.body;
+
+})
+
 export const adminControllers = {
-  create_admin,
+  create_admin,login_admin
 };
