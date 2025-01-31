@@ -5,5 +5,5 @@ import { adminValidationSchema } from "./admin.validation";
 const router = express.Router();
 
 router.post("/create", validateRequest(adminValidationSchema), adminControllers.create_admin);
-router.post("/login", validateRequest(adminValidationSchema))
+router.post("/login", validateRequest(adminValidationSchema), adminControllers)
 export const adminRoutes = router;
