@@ -22,6 +22,8 @@ const create_admin = catchAsync(async (req, res) => {
 const login_admin =catchAsync(async(req, res)=> {
   const data = req.body;
 
+  const result = await adminServices.login_admin_into_db(data)
+
 })
 
 export const adminControllers = {
