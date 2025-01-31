@@ -23,6 +23,11 @@ const login_admin_into_db = async (data: TAdmin) => {
   if (!isAdminExist) {
     throw new AppError(status.NOT_FOUND, "Admin is not found.");
   }
+
+  const isDeleted = isAdminExist.isDeleted;
+  if(isDeleted){
+    throw new AppError(status.FORBIDDEN, "Admin is deleted.")
+  }
 };
 
 export const adminServices = {
