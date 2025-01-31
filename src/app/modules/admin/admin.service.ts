@@ -16,7 +16,7 @@ const create_admin_into_db = async (data: TAdmin) => {
 };
 
 const login_admin_into_db = async (data: TAdmin) => {
-  console.log(data)
+  const isAdminExist = await adminModel.findOne({email: data.email});
 };
 
 export const adminServices = {
