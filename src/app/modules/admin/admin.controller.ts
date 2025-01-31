@@ -19,20 +19,20 @@ const create_admin = catchAsync(async (req, res) => {
   });
 });
 
-const login_admin =catchAsync(async(req, res)=> {
+const login_admin = catchAsync(async (req, res) => {
   const data = req.body;
 
-  const result = await adminServices.login_admin_into_db(data)
+  const result = await adminServices.login_admin_into_db(data);
 
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
     message: "Admin is login successfully.",
-    data: result
-  })
-
-})
+    data: result,
+  });
+});
 
 export const adminControllers = {
-  create_admin,login_admin
+  create_admin,
+  login_admin,
 };
