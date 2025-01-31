@@ -12,16 +12,13 @@ const create_admin_into_db = async (data: TAdmin) => {
 
   // Save to the database
   const savedAdmin = await newAdmin.save();
-  
+
   return savedAdmin;
 };
 
 const login_admin_into_db = async (data: TAdmin) => {
-  
-  const isAdminExist = await adminModel.findOne({email: data.email});
-  console.log(isAdminExist)
-
-
+  const isAdminExist = await adminModel.findOne({ email: data.email });
+  console.log(isAdminExist);
 };
 
 export const adminServices = {
