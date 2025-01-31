@@ -25,9 +25,16 @@ const login_admin_into_db = async (data: TAdmin) => {
   }
 
   const isDeleted = isAdminExist.isDeleted;
-  if(isDeleted){
-    throw new AppError(status.FORBIDDEN, "Admin is deleted.")
+  if (isDeleted) {
+    throw new AppError(status.FORBIDDEN, "Admin is deleted!");
   }
+
+  const isAdminBlocked = isAdminExist.status === "blocked";
+  if (isAdminBlocked) {
+    throw new AppError(status.FORBIDDEN, "Admin is blocked!");
+  }
+
+  
 };
 
 export const adminServices = {
