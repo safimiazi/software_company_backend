@@ -1,4 +1,5 @@
 import status from "http-status";
+import bcrypt from "bcrypt";
 import AppError from "../../errors/AppError";
 import { TAdmin } from "./admin.interface";
 import { adminModel } from "./admin.model";
@@ -34,7 +35,9 @@ const login_admin_into_db = async (data: TAdmin) => {
     throw new AppError(status.FORBIDDEN, "Admin is blocked!");
   }
 
-  
+  const isPasswordMatched = bcrypt.
+
+
 };
 
 export const adminServices = {
