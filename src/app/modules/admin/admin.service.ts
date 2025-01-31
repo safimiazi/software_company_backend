@@ -19,6 +19,7 @@ const login_admin_into_db = async (data: TAdmin) => {
   
   const isAdminExist = await adminModel.findOne({email: data.email});
   console.log(isAdminExist)
+  
 
 };
 
