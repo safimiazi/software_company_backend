@@ -15,6 +15,11 @@ const create_admin_into_db = async (data: TAdmin) => {
   return savedAdmin;
 };
 
+const login_admin_into_db = async (data: TAdmin) => {
+  
+};
+
 export const adminServices = {
   create_admin_into_db,
+  login_admin_into_db,
 };
