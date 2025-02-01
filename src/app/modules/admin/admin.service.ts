@@ -1,5 +1,6 @@
 import status from "http-status";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import AppError from "../../errors/AppError";
 import { TAdmin } from "./admin.interface";
 import { adminModel } from "./admin.model";
@@ -41,7 +42,12 @@ const login_admin_into_db = async (data: TAdmin) => {
     throw new AppError(status.FORBIDDEN, "Password does not matched!");
   }
 
+  const newData = {
+  id : isAdminExist.id,
+  role: isAdminExist.role
+  }
 
+  jwt.sign(newData, 'secret', { expiresIn: '1h' });
 
 
 };
