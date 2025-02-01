@@ -8,4 +8,5 @@ export default {
   DATABASE_URL: process.env.DATABASE_URL,
   SALT: Number(process.env.SALT_ROUND),
   node_env: process.env.NODE_ENV,
+  access_token: process.env.ACCESS_TOKEN
 };

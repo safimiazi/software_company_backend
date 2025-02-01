@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import AppError from "../../errors/AppError";
 import { TAdmin } from "./admin.interface";
 import { adminModel } from "./admin.model";
+import config from "../../config";
 
 const create_admin_into_db = async (data: TAdmin) => {
   const adminData = {
@@ -47,9 +48,8 @@ const login_admin_into_db = async (data: TAdmin) => {
   role: isAdminExist.role
   }
 
-  jwt.sign(newData, 'secret', { expiresIn: '1h' });
-
-
+ const access_token = jwt.sign(newData, (config.access_token as string), { expiresIn: '1h' });
+ 
 };
 
 export const adminServices = {
