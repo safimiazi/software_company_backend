@@ -37,7 +37,10 @@ const login_admin_into_db = async (data: TAdmin) => {
     throw new AppError(status.FORBIDDEN, "Admin is blocked!");
   }
 
-  const isPasswordMatched = await bcrypt.compare(data.password, isAdminExist.password);
+  const isPasswordMatched = await bcrypt.compare(
+    data.password,
+    isAdminExist.password
+  );
 
   if (!isPasswordMatched) {
     throw new AppError(status.FORBIDDEN, "Password does not matched!");
@@ -47,16 +50,14 @@ const login_admin_into_db = async (data: TAdmin) => {
     id: isAdminExist.id,
     role: isAdminExist.role,
   };
-  
-const access_token = createToken(
+
+  const access_token = createToken(
     newData,
-    (config.jwt_access_secret as string),
-    (config.jwt_access_expires_in as string)
-   
+    config.jwt_access_secret as string,
+    config.jwt_access_expires_in as string
   );
 
-  console.log(access_token)
- 
+  return access_token;
 };
 
 export const adminServices = {
