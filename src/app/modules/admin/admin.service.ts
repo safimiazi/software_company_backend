@@ -1,9 +1,9 @@
 import status from "http-status";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import AppError from "../../errors/AppError";
 import { TAdmin } from "./admin.interface";
 import { adminModel } from "./admin.model";
+import { createToken } from "../../utils/auth.utils";
 import config from "../../config";
 
 const create_admin_into_db = async (data: TAdmin) => {
@@ -44,11 +44,18 @@ const login_admin_into_db = async (data: TAdmin) => {
   }
 
   const newData = {
-  id : isAdminExist.id,
-  role: isAdminExist.role
-  }
+    id: isAdminExist.id,
+    role: isAdminExist.role,
+  };
+  
+const access_token = createToken(
+    newData,
+    (config.jwt_access_secret as string),
+    (config.jwt_access_expires_in as string)
+   
+  );
 
- const access_token = jwt.sign(newData, (config.access_token as string), { expiresIn: '1h' });
+  console.log(access_token)
  
 };
 

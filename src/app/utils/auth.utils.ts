@@ -1,6 +1,9 @@
-import config from "../config";
+import jwt from "jsonwebtoken";
 
-export const createToken = (newData: {id: string, role: string}, )=> {
-    const access_token = jwt.sign(newData, (config.access_token as string), { expiresIn: '1h' });
-
-}
+export const createToken = (
+  newData: { id: string; role: string },
+  secret: string,
+  expiresIn: string
+) => {
+  return jwt.sign(newData, secret, { expiresIn: parseInt(expiresIn) });
+};
