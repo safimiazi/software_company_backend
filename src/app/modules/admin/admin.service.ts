@@ -42,7 +42,7 @@ const login_admin_into_db = async (data: TAdmin) => {
   }
 
 
-  
+
 
 };
 
