@@ -35,8 +35,14 @@ const login_admin_into_db = async (data: TAdmin) => {
     throw new AppError(status.FORBIDDEN, "Admin is blocked!");
   }
 
-  const isPasswordMatched = bcrypt.
+  const isPasswordMatched = await bcrypt.compare(data.password, isAdminExist.password);
 
+  if (!isPasswordMatched) {
+    throw new AppError(status.FORBIDDEN, "Password does not matched!");
+  }
+
+
+  
 
 };
 
