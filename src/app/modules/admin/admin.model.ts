@@ -9,7 +9,7 @@ import status from "http-status";
 const adminSchema = new Schema<TAdmin, TAdminModel>({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  password: { type: String, required: true, select: 0 },
   needsPasswordChange: { type: Boolean, default: false },
   passwordChangeAt: { type: Date },
   role: { type: String, enum: ["admin", "employee"], default: "employee" },
@@ -43,5 +43,10 @@ adminSchema.pre("save", async function (next) {
   }
   next();
 });
+
+
+adminSchema.statics.isAdminExistById = async function (id: string) {
+  return await adminModel.findOne({_id: id})
+}
 
 export const adminModel = model<TAdmin, TAdminModel>("Admin", adminSchema);

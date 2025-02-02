@@ -19,4 +19,5 @@ export type TAdmin = {
 
 export interface TAdminModel extends Model<TAdmin> {
   isAdminExist(email: string): Promise<TAdmin | null>;
+  isAdminExistById(id: string) : Promise<TAdmin | null>;
 }

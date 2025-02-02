@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import AppError from "../../errors/AppError";
 import { TAdmin } from "./admin.interface";
 import { adminModel } from "./admin.model";
-import { createToken } from "../../utils/auth.utils";
+import jwt from "jsonwebtoken";
 import config from "../../config";
 
 const create_admin_into_db = async (data: TAdmin) => {
@@ -51,11 +51,7 @@ const login_admin_into_db = async (data: TAdmin) => {
     role: isAdminExist.role,
   };
 
-  const access_token = createToken(
-    newData,
-    config.jwt_access_secret as string,
-    config.jwt_access_expires_in as string
-  );
+  const access_token = jwt.sign(newData, (config.jwt_access_secret as string), { expiresIn: '1h' });
 
   return access_token;
 };

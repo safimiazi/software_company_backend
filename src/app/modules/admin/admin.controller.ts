@@ -22,7 +22,6 @@ const create_admin = catchAsync(async (req, res) => {
 
 const login_admin = catchAsync(async (req, res) => {
   const data = req.body;
-
   const access_token = await adminServices.login_admin_into_db(data);
 
   res.cookie("access_token", access_token, {
@@ -39,8 +38,19 @@ const login_admin = catchAsync(async (req, res) => {
     data: {},
   });
 });
+const get_admin_data = catchAsync(async (req, res) => {
+  
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Admin data is retrive successfully.",
+    data: {},
+  });
+});
 
 export const adminControllers = {
   create_admin,
   login_admin,
+  get_admin_data
 };
