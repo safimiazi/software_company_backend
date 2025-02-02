@@ -8,5 +8,6 @@ const router = express.Router();
 
 router.post("/create", validateRequest(adminValidationSchema), adminControllers.create_admin);
 router.post("/login", validateRequest(adminLoginValidationSchema), adminControllers.login_admin)
+router.post("/logout", adminControllers.logout_admin)
 router.get("/get_admin_data", auth(USER_ROLE.admin), adminControllers.get_admin_data)
 export const adminRoutes = router;

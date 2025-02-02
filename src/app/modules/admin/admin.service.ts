@@ -22,7 +22,9 @@ const create_admin_into_db = async (data: TAdmin) => {
 };
 
 const login_admin_into_db = async (data: TAdmin) => {
-  const isAdminExist = await adminModel.findOne({ email: data.email });
+  const isAdminExist = await adminModel
+    .findOne({ email: data.email })
+    .select("+password");
   if (!isAdminExist) {
     throw new AppError(status.NOT_FOUND, "Admin is not found.");
   }
@@ -51,7 +53,9 @@ const login_admin_into_db = async (data: TAdmin) => {
     role: isAdminExist.role,
   };
 
-  const access_token = jwt.sign(newData, (config.jwt_access_secret as string), { expiresIn: '1h' });
+  const access_token = jwt.sign(newData, config.jwt_access_secret as string, {
+    expiresIn: "1h",
+  });
 
   return access_token;
 };
