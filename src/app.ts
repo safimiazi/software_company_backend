@@ -7,12 +7,13 @@ import notFound from "./app/middlewares/notFound";
 import cookieParser from "cookie-parser";
 // parser
 app.use(express.json());
-app.use(cors({
-  origin: "http://localhost:5173", // ✅ Frontend URL
-  credentials: true, // ✅ Allow cookies
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173", // ✅ Frontend URL
+    credentials: true, // ✅ Allow cookies
+  })
+);
 app.use(cookieParser());
-
 
 app.use("/api/v1", router);
 
