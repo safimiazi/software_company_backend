@@ -6,6 +6,7 @@ import path from "path";
 import zlib from "zlib";
 import util from "util";
 import { NextFunction, Request, Response } from "express";
+import { PDFDocument } from "pdf-lib"; // Import PDF compression library
 
 interface getMulterProps {
   upload_file_destination_path: any;
@@ -95,6 +96,15 @@ export const compressFile = async (
       fs.unlinkSync(filePath); // Delete original file
       req.file.path = compressedPath; // Update file path in request
       req.file.filename = path.basename(compressedPath);
+    } else if (fileExt === ".pdf") {
+      // ✅ Compress PDF using pdf-lib
+      const pdfBytes = fs.readFileSync(filePath);
+      const pdfDoc = await PDFDocument.load(pdfBytes);
+      pdfDoc.setCreator(""); // Remove unnecessary metadata
+      pdfDoc.setProducer("");
+
+      const compressedPdf = await pdfDoc.save({ useObjectStreams: true });
+      fs.writeFileSync(filePath, compressedPdf);
     } else {
       // Compress other file types using zlib
       const compressedPath = `${filePath}.gz`;
@@ -113,3 +123,23 @@ export const compressFile = async (
     next(error);
   }
 };
+
+// else if (fileExt === ".pdf") {
+//     // ✅ Compress PDF using Ghostscript
+//     const compressedPath = filePath.replace(".pdf", "-compressed.pdf");
+
+//     await gs.execute([
+//       "-sDEVICE=pdfwrite",
+//       "-dCompatibilityLevel=1.4",
+//       "-dPDFSETTINGS=/screen", // Options: /screen (smallest), /ebook, /printer, /prepress
+//       "-dNOPAUSE",
+//       "-dQUIET",
+//       "-dBATCH",
+//       `-sOutputFile=${compressedPath}`,
+//       filePath,
+//     ]);
+
+//     fs.unlinkSync(filePath); // Delete original file
+//     req.file.path = compressedPath;
+//     req.file.filename = path.basename(compressedPath);
+//   }

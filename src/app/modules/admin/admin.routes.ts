@@ -13,8 +13,8 @@ const upload_file_destination_path = path.join(__dirname, "../../upload_files");
 
 const upload = getMuler({
   upload_file_destination_path,
-  regex: /jpeg|jpg|png/,
-  images: "jpg, jpeg, png",
+  regex: /jpeg|jpg|png|pdf/,
+  images: "jpg, jpeg, png, pdf",
 });
 
 
