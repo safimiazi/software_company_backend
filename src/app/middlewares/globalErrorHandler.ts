@@ -24,7 +24,7 @@ const globalErrorHandler: ErrorRequestHandler = (
   next: NextFunction
 ) => {
   let statusCode: string | number = status.INTERNAL_SERVER_ERROR;
-  let meassage = "Something went wrong.";
+  let message = "Something went wrong.";
   let errorSource: TErrorSource[] = [
     {
       path: "",
@@ -36,26 +36,26 @@ const globalErrorHandler: ErrorRequestHandler = (
   if (err instanceof ZodError) {
     const simplifiedErrors = handleZodError(err);
     statusCode = simplifiedErrors?.statusCode;
-    meassage = simplifiedErrors?.message;
+    message = simplifiedErrors?.message;
     errorSource = simplifiedErrors?.errorSource;
   } else if (err?.name === "ValidationError") {
     const simplifiedError = handleValidationError(err);
     statusCode = simplifiedError?.statusCode;
-    meassage = simplifiedError?.message;
+    message = simplifiedError?.message;
     errorSource = simplifiedError?.errorSource;
   } else if (err?.name === "CastError") {
     const simplifiedError = handleCastError(err);
     statusCode = simplifiedError?.statusCode;
-    meassage = simplifiedError?.message;
+    message = simplifiedError?.message;
     errorSource = simplifiedError?.errorSource;
   } else if (err?.code === "11000") {
     const simplifiedError = handleDuplicateError(err);
     statusCode = simplifiedError?.statusCode;
-    meassage = simplifiedError?.message;
+    message = simplifiedError?.message;
     errorSource = simplifiedError?.errorSource;
   } else if (err instanceof AppError) {
     statusCode = err?.statusCode;
-    meassage = err.message;
+    message = err.message;
     errorSource = [
       {
         path: "",
@@ -63,7 +63,7 @@ const globalErrorHandler: ErrorRequestHandler = (
       },
     ];
   } else if (err instanceof Error) {
-    meassage = err.message;
+    message = err.message;
     errorSource = [
       {
         path: "",
@@ -74,7 +74,7 @@ const globalErrorHandler: ErrorRequestHandler = (
 
   res.status(statusCode).json({
     success: false,
-    meassage,
+    message,
     errorSource,
     stack: config.node_env === "development" ? err?.stack : undefined,
   });

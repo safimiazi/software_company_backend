@@ -7,9 +7,11 @@ import notFound from "./app/middlewares/notFound";
 import cookieParser from "cookie-parser";
 // parser
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(
   cors({
-    origin: "http://localhost:5173", // ✅ Frontend URL
+    origin: "*", // ✅ Frontend URL
     credentials: true, // ✅ Allow cookies
   })
 );
