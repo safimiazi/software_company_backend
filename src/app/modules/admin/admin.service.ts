@@ -61,18 +61,9 @@ const login_admin_into_db = async (data: TAdmin) => {
 };
 
 
-const admin_post_home_banner_into_db = ({
-  title,
-  destination,
-  ctaText,
-  ctaLink,
-  filename,
-} ) => {
 
-}
 
 export const adminServices = {
   create_admin_into_db,
   login_admin_into_db,
-  admin_post_home_banner_into_db
 };
