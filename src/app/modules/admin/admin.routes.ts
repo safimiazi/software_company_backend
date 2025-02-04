@@ -25,5 +25,5 @@ router.get("/get_admin_data", auth(USER_ROLE.admin), adminControllers.get_admin_
 
 // home page:
 
-router.post("/post_home_banner_data", upload.single("image"), compressFile, )
+router.post("/post_home_banner_data", upload.single("image"), compressFile,adminControllers.admin_post_home_banner )
 export const adminRoutes = router;

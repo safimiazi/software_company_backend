@@ -60,7 +60,13 @@ const login_admin_into_db = async (data: TAdmin) => {
   return access_token;
 };
 
+
+const admin_post_home_banner_into_db = (data) => {
+
+}
+
 export const adminServices = {
   create_admin_into_db,
   login_admin_into_db,
+  admin_post_home_banner_into_db
 };

@@ -54,8 +54,6 @@ const logout_admin = catchAsync(async (req, res) => {
   });
 });
 
-
-
 const get_admin_data = catchAsync(async (req, res) => {
   const data = req.user;
 
@@ -69,9 +67,30 @@ const get_admin_data = catchAsync(async (req, res) => {
   });
 });
 
+const admin_post_home_banner = catchAsync(async (req, res) => {
+  const { title, destination, ctaText, ctaLink } = req.body;
+  const filename = req.file ? req.file.filename : null; // Check if file exists
+
+  const result = await adminServices.admin_post_home_banner_into_db({
+    title,
+    destination,
+    ctaText,
+    ctaLink,
+    filename,
+  });
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Banner is saved successfully.",
+    data: result,
+  });
+});
+
 export const adminControllers = {
   create_admin,
   login_admin,
   get_admin_data,
-  logout_admin
+  logout_admin,
+  admin_post_home_banner,
 };
