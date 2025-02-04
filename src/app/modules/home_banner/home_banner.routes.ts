@@ -2,6 +2,8 @@ import express from "express";
 import path from "path";
 import { compressFile, getMuler } from "../../middlewares/multer";
 import { homeBannerControllers } from "./home_banner.controller";
+import { validateRequest } from "../../middlewares/validateRequest";
+import { HomeBannerValidationSchema } from "./home_banner.validation";
 
 const router = express.Router();
 
@@ -14,4 +16,5 @@ const upload = getMuler({
 });
 
 
-router.post("/post_home_banner_data", upload.single("image"), compressFile,homeBannerControllers.admin_post_home_banner )
+router.post("/post_home_banner_data", upload.single("image"), compressFile,validateRequest(HomeBannerValidationSchema), homeBannerControllers.admin_post_home_banner )
+ export const homeBannerRoutes = router;
