@@ -65,7 +65,7 @@ const admin_put_home_banner = catchAsync(
     sendResponse(res, {
       statusCode: status.OK,
       success: true,
-      message: "Banner is Edited successfully.",
+      message: "Banner is edited successfully.",
       data: result,
     });
   }
@@ -87,9 +87,21 @@ const get_home_banner_images = catchAsync(async (req, res) => {
   res.sendFile(result);
 });
 
+const admin_delete_home_banner = catchAsync(async(req, res)=> {
+  const {id} = req.params;
+  const result = homeBannerServices.home_banner_data_delete_db(id)
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Home banner deleted successfully",
+    data: result,
+  });
+})
+
 export const homeBannerControllers = {
   admin_post_home_banner,
   get_home_banner_data,
   get_home_banner_images,
   admin_put_home_banner,
+  admin_delete_home_banner
 };
