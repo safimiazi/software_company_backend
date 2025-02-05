@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import path from "path";
 import { IHomeBanner } from "./home_banner.interface";
 import HomeBannerModel from "./home_banner.model";
@@ -19,6 +20,27 @@ const admin_post_home_banner_into_db = async ({
     ctaLink,
     image: filename,
   });
+
+  return result;
+};
+const admin_put_home_banner_into_db = async ({
+  id,
+  title,
+  description,
+  ctaText,
+  ctaLink,
+  filename,
+}: any) => {
+  const result = await HomeBannerModel.updateOne(
+    { _id: id },
+    {
+      title,
+      description,
+      ctaText,
+      ctaLink,
+      image: filename,
+    }
+  );
 
   return result;
 };
@@ -52,4 +74,5 @@ export const homeBannerServices = {
   admin_post_home_banner_into_db,
   get_home_banner_into_db,
   get_home_banner_image_into_db,
+  admin_put_home_banner_into_db,
 };

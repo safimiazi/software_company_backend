@@ -23,9 +23,9 @@ export const getMuler = ({
       cb(null, upload_file_destination_path);
     },
     filename: function (req, file, cb) {
-      const extention = path.extname(file.originalname);
+      const extention = path.extname(file?.originalname);
       const file_name =
-        file.originalname
+        file?.originalname
           .replace(extention, "")
           .toLowerCase()
           .split(" ")
@@ -43,8 +43,8 @@ export const getMuler = ({
     file: Express.Multer.File,
     cb: any
   ) => {
-    const extName = regex.test(path.extname(file.originalname).toLowerCase());
-    const mimeType = regex.test(file.mimetype);
+    const extName = regex.test(path.extname(file?.originalname).toLowerCase());
+    const mimeType = regex.test(file?.mimetype);
 
     if (mimeType && extName) {
       return cb(null, true); // Accept the file

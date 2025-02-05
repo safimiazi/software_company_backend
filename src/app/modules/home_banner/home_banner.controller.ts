@@ -5,6 +5,9 @@ import sendResponse from "../../utils/sendResponse";
 import catchAsync from "../../utils/catchAsync";
 import { homeBannerServices } from "./home_banner.service";
 import { IHomeBannerRequestWithFile } from "./home_banner.interface";
+import HomeBannerModel from "./home_banner.model";
+import path from "path";
+import fs from "fs";
 
 const admin_post_home_banner = catchAsync(
   async (req: IHomeBannerRequestWithFile, res) => {
@@ -29,31 +32,38 @@ const admin_post_home_banner = catchAsync(
 const admin_put_home_banner = catchAsync(
   async (req: IHomeBannerRequestWithFile, res) => {
     const { title, description, ctaText, ctaLink } = req.body;
-    const filename = req.file ? req.file.filename : null; // Check if file exists
-const {id} = req.params;
-console.log("dddd", id)
+    const new_file_name = req.file ? req.file.filename : null; // Check if file exists
+    const { id } = req.params;
 
+    const findExistingDataById = await HomeBannerModel.findOne({ _id: id });
+    if (findExistingDataById) {
+      const file_name = findExistingDataById.image;
+      const filePath = file_name
+        ? path.join(__dirname, "../../upload_files", file_name)
+        : null;
+      if (filePath && fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    }
 
-
-    const result = ""
-    // await homeBannerServices.admin_post_home_banner_into_db({
-    //   title,
-    //   description,
-    //   ctaText,
-    //   ctaLink,
-    //   filename,
-    // });
+    const result =  await homeBannerServices.admin_put_home_banner_into_db({
+      id,
+      title,
+      description,
+      ctaText,
+      ctaLink,
+      filename: new_file_name,
+    });
 
     sendResponse(res, {
       statusCode: status.OK,
       success: true,
-      message: "Banner is saved successfully.",
+      message: "Banner is Edited successfully.",
       data: result,
     });
   }
 );
 const get_home_banner_data = catchAsync(async (req, res) => {
-  
   const result = await homeBannerServices.get_home_banner_into_db(req.query);
 
   sendResponse(res, {
@@ -73,5 +83,5 @@ export const homeBannerControllers = {
   admin_post_home_banner,
   get_home_banner_data,
   get_home_banner_images,
-  admin_put_home_banner
+  admin_put_home_banner,
 };
