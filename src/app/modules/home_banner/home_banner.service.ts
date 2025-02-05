@@ -22,21 +22,21 @@ const admin_post_home_banner_into_db = async ({
 };
 
 const get_home_banner_into_db = async () => {
-  const result = await HomeBannerModel.find();
+  const result = await HomeBannerModel.find().sort({ createdAt: -1 });
   return result;
 };
 const get_home_banner_image_into_db = async (id: string) => {
-  const result = await HomeBannerModel.findOne({_id:id})
-  const image = result?.image || null;
+  const result = await HomeBannerModel.findOne({ _id: id });
+  const image = result?.image as string;
   const filePath = path.join(
     __dirname,
     "../../upload_files", // Adjust the path based on your project structure
     image
   );
   return filePath;
-
 };
 export const homeBannerServices = {
   admin_post_home_banner_into_db,
-  get_home_banner_into_db,get_home_banner_image_into_db
+  get_home_banner_into_db,
+  get_home_banner_image_into_db,
 };

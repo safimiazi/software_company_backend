@@ -6,6 +6,7 @@ export interface IHomeBanner {
   ctaText?: string;
   ctaLink?: string;
   filename?: string | null;
+  image?: string ;
 }
 
 export interface IHomeBannerRequestWithFile extends Request {

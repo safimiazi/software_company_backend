@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import multer from "multer";
-import sharp from "sharp";
 import fs from "fs";
 import path from "path";
 
-import { NextFunction, Request, Response } from "express";
 
 interface getMulterProps {
   upload_file_destination_path: any;
@@ -67,57 +65,3 @@ export const getMuler = ({
   });
 };
 
-// Middleware for compressing files after upload
-export const compressFile = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    if (!req.file) {
-      return next();
-    }
-
-    const filePath = req.file.path;
-    const fileExt = path.extname(req.file.originalname).toLowerCase();
-
-    if ([".jpg", ".jpeg", ".png", ".webp"].includes(fileExt)) {
-      // Compress images using sharp
-      const compressedPath = filePath.replace(fileExt, "-compressed.webp");
-      await sharp(filePath)
-        // .resize(800) // Resize to 800px width (optional)
-        .webp({ quality: 70 }) // Convert to WebP with 70% quality
-        .toFile(compressedPath);
-      // Ensure sharp has released the file before deleting
-    await  fs.promises.unlink(filePath); // Delete original file
-
-      req.file.path = compressedPath; // Update file path in request
-      req.file.filename = path.basename(compressedPath);
-    }
-
-    next();
-  } catch (error) {
-    console.error("Compression Error:", error);
-    next(error);
-  }
-};
-
-// else if (fileExt === ".pdf") {
-//     // ✅ Compress PDF using Ghostscript
-//     const compressedPath = filePath.replace(".pdf", "-compressed.pdf");
-
-//     await gs.execute([
-//       "-sDEVICE=pdfwrite",
-//       "-dCompatibilityLevel=1.4",
-//       "-dPDFSETTINGS=/screen", // Options: /screen (smallest), /ebook, /printer, /prepress
-//       "-dNOPAUSE",
-//       "-dQUIET",
-//       "-dBATCH",
-//       `-sOutputFile=${compressedPath}`,
-//       filePath,
-//     ]);
-
-//     fs.unlinkSync(filePath); // Delete original file
-//     req.file.path = compressedPath;
-//     req.file.filename = path.basename(compressedPath);
-//   }
