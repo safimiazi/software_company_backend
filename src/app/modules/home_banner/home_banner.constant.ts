@@ -1,0 +1,1 @@
+export const home_banner_searchable_fields = ["title", "description", "ctaText"];
