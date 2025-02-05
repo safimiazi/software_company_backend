@@ -1,3 +1,4 @@
+import path from "path";
 import { IHomeBanner } from "./home_banner.interface";
 import HomeBannerModel from "./home_banner.model";
 
@@ -20,6 +21,22 @@ const admin_post_home_banner_into_db = async ({
   return result;
 };
 
+const get_home_banner_into_db = async () => {
+  const result = await HomeBannerModel.find();
+  return result;
+};
+const get_home_banner_image_into_db = async (id: string) => {
+  const result = await HomeBannerModel.findOne({_id:id})
+  const image = result?.image || null;
+  const filePath = path.join(
+    __dirname,
+    "../../upload_files", // Adjust the path based on your project structure
+    image
+  );
+  return filePath;
+
+};
 export const homeBannerServices = {
   admin_post_home_banner_into_db,
+  get_home_banner_into_db,get_home_banner_image_into_db
 };

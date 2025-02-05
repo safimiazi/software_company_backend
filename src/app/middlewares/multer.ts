@@ -3,10 +3,8 @@ import multer from "multer";
 import sharp from "sharp";
 import fs from "fs";
 import path from "path";
-import zlib from "zlib";
-import util from "util";
+
 import { NextFunction, Request, Response } from "express";
-import { PDFDocument } from "pdf-lib"; // Import PDF compression library
 
 interface getMulterProps {
   upload_file_destination_path: any;
@@ -69,8 +67,6 @@ export const getMuler = ({
   });
 };
 
-const pipeline = util.promisify(zlib.gzip);
-
 // Middleware for compressing files after upload
 export const compressFile = async (
   req: Request,
@@ -89,31 +85,13 @@ export const compressFile = async (
       // Compress images using sharp
       const compressedPath = filePath.replace(fileExt, "-compressed.webp");
       await sharp(filePath)
-        .resize(800) // Resize to 800px width (optional)
+        // .resize(800) // Resize to 800px width (optional)
         .webp({ quality: 70 }) // Convert to WebP with 70% quality
         .toFile(compressedPath);
+      // Ensure sharp has released the file before deleting
+    await  fs.promises.unlink(filePath); // Delete original file
 
-      fs.unlinkSync(filePath); // Delete original file
       req.file.path = compressedPath; // Update file path in request
-      req.file.filename = path.basename(compressedPath);
-    } else if (fileExt === ".pdf") {
-      // ✅ Compress PDF using pdf-lib
-      const pdfBytes = fs.readFileSync(filePath);
-      const pdfDoc = await PDFDocument.load(pdfBytes);
-      pdfDoc.setCreator(""); // Remove unnecessary metadata
-      pdfDoc.setProducer("");
-
-      const compressedPdf = await pdfDoc.save({ useObjectStreams: true });
-      fs.writeFileSync(filePath, compressedPdf);
-    } else {
-      // Compress other file types using zlib
-      const compressedPath = `${filePath}.gz`;
-      const fileData = fs.readFileSync(filePath);
-      const compressedData = await pipeline(fileData);
-      fs.writeFileSync(compressedPath, compressedData);
-      fs.unlinkSync(filePath); // Delete original file
-
-      req.file.path = compressedPath;
       req.file.filename = path.basename(compressedPath);
     }
 

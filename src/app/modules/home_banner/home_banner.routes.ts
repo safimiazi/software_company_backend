@@ -1,9 +1,10 @@
 import express from "express";
 import path from "path";
-import { compressFile, getMuler } from "../../middlewares/multer";
+import {  getMuler } from "../../middlewares/multer";
 import { homeBannerControllers } from "./home_banner.controller";
 import { validateRequest } from "../../middlewares/validateRequest";
 import { HomeBannerValidationSchema } from "./home_banner.validation";
+import { photoComposure } from "../../middlewares/photoComposure";
 
 const router = express.Router();
 
@@ -14,7 +15,11 @@ const upload = getMuler({
   regex: /jpeg|jpg|png|pdf/,
   images: "jpg, jpeg, png, pdf",
 });
+const { configurableCompression } = photoComposure();
 
 
-router.post("/post_home_banner_data", upload.single("image"), compressFile,validateRequest(HomeBannerValidationSchema), homeBannerControllers.admin_post_home_banner )
+router.post("/post_home_banner_data", upload.single("image"),   configurableCompression("jpeg", 60),validateRequest(HomeBannerValidationSchema), homeBannerControllers.admin_post_home_banner )
+router.get("/get_home_page_banner_data", homeBannerControllers.get_home_banner_data )
+router.get("/get_home_page_banner_images/:id", homeBannerControllers.get_home_banner_images )
+
  export const homeBannerRoutes = router;
