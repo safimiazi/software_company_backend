@@ -11,5 +11,5 @@ export interface IHomeAbout {
 
 export interface IHomeAboutRequestWithFile extends Request {
   body: IHomeAbout;
-  file: Express.Multer.File;
+  file?: Express.Multer.File;
 }

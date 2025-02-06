@@ -1,43 +1,41 @@
 // home_about.controller.ts - home_about module
-// home_banner.controller.ts - home_banner module
 
 import status from "http-status";
 import sendResponse from "../../utils/sendResponse";
 import catchAsync from "../../utils/catchAsync";
-import { homeBannerServices } from "./home_banner.service";
-import { IHomeBannerRequestWithFile } from "./home_banner.interface";
-import HomeBannerModel from "./home_banner.model";
 import path from "path";
 import fs from "fs";
+import { homeAboutServices } from "./home_about.service";
+import { IHomeAboutRequestWithFile } from "./home_about.interface";
+import HomeAboutModel from "./home_about.model";
 
-const admin_post_home_banner = catchAsync(
-  async (req: IHomeBannerRequestWithFile, res) => {
-    const { title, description, ctaText, ctaLink } = req.body;
+const admin_post_home_about = catchAsync(
+  async (req: IHomeAboutRequestWithFile, res) => {
+    const { title, description, heading } = req.body;
     const filename = req.file ? req.file.filename : null; // Check if file exists
-    const result = await homeBannerServices.admin_post_home_banner_into_db({
+    const result = await homeAboutServices.admin_post_home_about_into_db({
       title,
       description,
-      ctaText,
-      ctaLink,
+      heading,
       filename,
     });
 
     sendResponse(res, {
       statusCode: status.OK,
       success: true,
-      message: "Banner is saved successfully.",
+      message: "About is saved successfully.",
       data: result,
     });
   }
 );
-const admin_put_home_banner = catchAsync(
-  async (req: IHomeBannerRequestWithFile, res) => {
-    const { title, description, ctaText, ctaLink } = req.body;
+const admin_put_home_about = catchAsync(
+  async (req: IHomeAboutRequestWithFile, res) => {
+    const { title, description,heading } = req.body;
     const new_file_name = req.file ? req.file.filename : null; // নতুন ফাইল থাকলে সেট করো
     const { id } = req.params;
 
     // ID দিয়ে ডাটাবেজ থেকে ব্যানার খোঁজা
-    const findExistingDataById = await HomeBannerModel.findOne({ _id: id });
+    const findExistingDataById = await HomeAboutModel.findOne({ _id: id });
 
     // যদি ব্যানার পাওয়া যায়
     if (findExistingDataById) {
@@ -54,55 +52,55 @@ const admin_put_home_banner = catchAsync(
     }
 
     // ব্যানার আপডেট করো
-    const result = await homeBannerServices.admin_put_home_banner_into_db({
+    const result = await homeAboutServices.admin_put_home_about_into_db({
       id,
       title,
       description,
-      ctaText,
-      ctaLink,
+      heading,
       filename: new_file_name || findExistingDataById?.image, // নতুন ইমেজ না থাকলে আগেরটাই রাখো
     });
 
     sendResponse(res, {
       statusCode: status.OK,
       success: true,
-      message: "Banner is edited successfully.",
+      message: "About is edited successfully.",
       data: result,
     });
   }
 );
 
-const get_home_banner_data = catchAsync(async (req, res) => {
-  const result = await homeBannerServices.get_home_banner_into_db(req.query);
+const get_home_about_data = catchAsync(async (req, res) => {
+  const result = await homeAboutServices.get_home_about_into_db(req.query);
 
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
-    message: "Banner data is retrived successfully.",
+    message: "About data is retrived successfully.",
     data: result,
   });
 });
-const get_home_banner_images = catchAsync(async (req, res) => {
+const get_home_about_images = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const result = await homeBannerServices.get_home_banner_image_into_db(id);
+  const result = await homeAboutServices.get_home_about_image_into_db(id);
+  console.log("result", result)
   res.sendFile(result);
 });
 
-const admin_delete_home_banner = catchAsync(async(req, res)=> {
+const admin_delete_home_about = catchAsync(async(req, res)=> {
   const {id} = req.params;
-  const result = homeBannerServices.home_banner_data_delete_db(id)
+  const result = homeAboutServices.home_about_data_delete_db(id)
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
-    message: "Home banner deleted successfully",
+    message: "Home about deleted successfully",
     data: result,
   });
 })
 
-export const homeBannerControllers = {
-  admin_post_home_banner,
-  get_home_banner_data,
-  get_home_banner_images,
-  admin_put_home_banner,
-  admin_delete_home_banner
+export const homeAboutControllers = {
+  admin_post_home_about,
+  get_home_about_data,
+  get_home_about_images,
+  admin_put_home_about,
+  admin_delete_home_about
 };
