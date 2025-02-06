@@ -9,12 +9,22 @@ import cookieParser from "cookie-parser";
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
+app.use(cookieParser());
+
 app.use(
   cors({
-    origin: "*", // ✅ Frontend URL
-    credentials: true, // ✅ Allow cookies
+    origin: ["http://localhost:5173", "http://localhost:3000"], 
+    credentials: true, // Important for cookies/session
   })
 );
+
+// app.post('/track', (req, res) => {
+//   const { url, timestamp, childId } = req.body;
+//  console.log("url", url)
+// });
+
+
 app.use(cookieParser());
 
 app.use("/api/v1", router);
