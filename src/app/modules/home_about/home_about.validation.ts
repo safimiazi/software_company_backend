@@ -5,6 +5,8 @@ import { z } from "zod";
 export const HomeAboutValidationSchema = z.object({
   title: z.string().min(3, {message: "Title must be at least 3 characters"}),
   description: z.string().min(1, { message: "Name is required." }),
-  heading: z.string().min(3, {message: "Heading is required."})
+  heading: z.string().min(3, {message: "Heading is required."}),
+  ctaText: z.string().min(1, { message: "CTA Text is required" }),
+  ctaLink: z.string().min(1, { message: "CTA Link is required" }),
 });
 
