@@ -16,13 +16,23 @@ const AboutSchema: Schema = new Schema(
       required: [true, "Description is required"],
       trim: true,
     },
- 
+
     heading: {
       type: String,
       required: [true, "Heading is required"],
       trim: true,
     },
- 
+
+    ctaText: {
+      type: String,
+      required: [true, "CTA text is required"],
+
+      trim: true,
+    },
+    ctaLink: {
+      type: String,
+      required: [true, "CTA Link is required"],
+    },
     image: {
       type: String,
     },
@@ -31,8 +41,5 @@ const AboutSchema: Schema = new Schema(
 );
 
 // Create & Export the Model
-const HomeAboutModel = mongoose.model<IHomeAbout>(
-  "home_about",
-  AboutSchema
-);
+const HomeAboutModel = mongoose.model<IHomeAbout>("home_about", AboutSchema);
 export default HomeAboutModel;

@@ -14,11 +14,14 @@ const admin_post_home_about_into_db = async ({
   title,
   description,
   heading,
+  ctaText, ctaLink,
   filename,
 }: Partial<IHomeAbout>) => {
+    
   const result = await HomeAboutModel.create({
     title,
     description,
+    ctaText, ctaLink,
     heading,
     image: filename,
   });
@@ -29,6 +32,7 @@ const admin_put_home_about_into_db = async ({
   id,
   title,
   description,
+  ctaText, ctaLink,
   heading,
   filename,
 }: any) => {
@@ -38,6 +42,7 @@ const admin_put_home_about_into_db = async ({
       title,
       description,
       heading,
+      ctaText, ctaLink,
       image: filename,
     }
   );

@@ -11,12 +11,13 @@ import HomeAboutModel from "./home_about.model";
 
 const admin_post_home_about = catchAsync(
   async (req: IHomeAboutRequestWithFile, res) => {
-    const { title, description, heading } = req.body;
+    const { title, description, heading ,ctaText, ctaLink} = req.body;
     const filename = req.file ? req.file.filename : null; // Check if file exists
     const result = await homeAboutServices.admin_post_home_about_into_db({
       title,
       description,
       heading,
+      ctaText, ctaLink,
       filename,
     });
 
@@ -30,7 +31,7 @@ const admin_post_home_about = catchAsync(
 );
 const admin_put_home_about = catchAsync(
   async (req: IHomeAboutRequestWithFile, res) => {
-    const { title, description,heading } = req.body;
+    const { title, description,heading ,ctaText, ctaLink} = req.body;
     const new_file_name = req.file ? req.file.filename : null; // নতুন ফাইল থাকলে সেট করো
     const { id } = req.params;
 
@@ -56,6 +57,7 @@ const admin_put_home_about = catchAsync(
       id,
       title,
       description,
+      ctaText, ctaLink,
       heading,
       filename: new_file_name || findExistingDataById?.image, // নতুন ইমেজ না থাকলে আগেরটাই রাখো
     });
@@ -82,7 +84,6 @@ const get_home_about_data = catchAsync(async (req, res) => {
 const get_home_about_images = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result = await homeAboutServices.get_home_about_image_into_db(id);
-  console.log("result", result)
   res.sendFile(result);
 });
 

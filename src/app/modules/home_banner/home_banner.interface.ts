@@ -3,8 +3,8 @@ import { Request } from "express";
 export interface IHomeBanner {
   title: string;
   description: string;
-  ctaText?: string;
-  ctaLink?: string;
+  ctaText: string;
+  ctaLink: string;
   filename?: string | null;
   image?: string ;
 }

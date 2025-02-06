@@ -7,6 +7,8 @@ export interface IHomeAbout {
   description: string;
   filename: string | null;
   image?: string ;
+  ctaText: string;
+  ctaLink: string;
 }
 
 export interface IHomeAboutRequestWithFile extends Request {
