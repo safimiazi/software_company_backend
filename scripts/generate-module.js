@@ -15,12 +15,13 @@ const modulePath = path.join(__dirname, "..", "src", "app", "modules", moduleNam
 
 // Module structure
 const files = [
+  `${moduleName}.routes.ts`,
+  `${moduleName}.interface.ts`,
+  `${moduleName}.validation.ts`,
+  `${moduleName}.model.ts`,
   `${moduleName}.controller.ts`,
   `${moduleName}.service.ts`,
-  `${moduleName}.model.ts`,
-  `${moduleName}.routes.ts`,
-  `${moduleName}.validation.ts`,
-  `${moduleName}.interface.ts`
+  `${moduleName}.constant.ts`
 ];
 
 // Create the module folder if not exists
