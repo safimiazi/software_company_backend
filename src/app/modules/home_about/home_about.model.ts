@@ -34,12 +34,13 @@ const AboutSchema: Schema = new Schema(
       type: String,
       required: [true, "CTA Link is required"],
     },
-    
+
     image: {
       type: String,
     },
   },
   { timestamps: true }
+  
 );
 
 // Create & Export the Model
