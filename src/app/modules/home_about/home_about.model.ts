@@ -29,11 +29,12 @@ const AboutSchema: Schema = new Schema(
 
       trim: true,
     },
-    
+
     ctaLink: {
       type: String,
       required: [true, "CTA Link is required"],
     },
+    
     image: {
       type: String,
     },
