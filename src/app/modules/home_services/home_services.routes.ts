@@ -22,4 +22,4 @@ router.put("/put_services_data/:id", upload.single("image"),   configurableCompr
 router.delete("/delete_services_data/:id" )
 router.get("/get_services_data")
 
- export const homeAboutRoutes = router;
+ export const ServicesRoutes = router;
