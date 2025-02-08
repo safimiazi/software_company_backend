@@ -51,6 +51,11 @@ const ServiceSchema: Schema = new Schema<IServices>(
           type: String,
           required: [true, "Service CTA Link is required"],
         },
+        image: {
+            type: String,
+            required: [true, "Icon is required"],
+
+          },
       },
     ],
   },
