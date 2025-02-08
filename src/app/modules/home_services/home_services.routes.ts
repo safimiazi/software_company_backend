@@ -1,1 +1,25 @@
 // home_services.routes.ts - home_services module
+import express from "express";
+import path from "path";
+import { getMuler } from "../../middlewares/multer";
+import { photoComposure } from "../../middlewares/photoComposure";
+import { serviceValidationSchema } from "./home_services.validation";
+import { validateRequest } from "../../middlewares/validateRequest";
+const router = express.Router();
+
+const upload_file_destination_path = path.join(__dirname, "../../upload_files");
+
+const upload = getMuler({
+  upload_file_destination_path,
+  regex: /jpeg|jpg|png|pdf/,
+  images: "jpg, jpeg, png, pdf",
+});
+const { configurableCompression } = photoComposure();
+
+
+router.post("/post_services_data", upload.single("image"),   configurableCompression("jpeg", 60),validateRequest(serviceValidationSchema))
+router.put("/put_services_data/:id", upload.single("image"),   configurableCompression("jpeg", 60),validateRequest(serviceValidationSchema) )
+router.delete("/delete_services_data/:id" )
+router.get("/get_services_data")
+
+ export const homeAboutRoutes = router;
