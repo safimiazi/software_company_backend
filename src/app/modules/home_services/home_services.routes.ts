@@ -2,7 +2,6 @@
 import express from "express";
 import path from "path";
 import { getMuler } from "../../middlewares/multer";
-import { photoComposure } from "../../middlewares/photoComposure";
 import { serviceValidationSchema } from "./home_services.validation";
 import { validateRequest } from "../../middlewares/validateRequest";
 import { serviceController } from "./home_services.controller";
@@ -15,7 +14,6 @@ const upload = getMuler({
   regex: /svg/,
   images: "svg",
 });
-const { configurableCompression } = photoComposure();
 
 
 router.post("/post_services_data", upload.single("image"),validateRequest(serviceValidationSchema), serviceController.admin_post_Services)
