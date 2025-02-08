@@ -12,12 +12,24 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
 
-app.use(
-  cors({
-    origin:'*', 
-    credentials: true, // Important for cookies/session
-  })
-);
+const allowedOrigins = ['http://localhost:5173', 'http://localhost:3000'];
+
+app.options('*', cors({
+  origin: (origin, callback) => {
+    console.log("Preflight Request Origin:", origin);
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 200,
+}));
+
+
 
 // app.post('/track', (req, res) => {
 //   const { url, timestamp, childId } = req.body;
