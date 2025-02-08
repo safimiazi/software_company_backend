@@ -24,7 +24,6 @@ export const serviceValidationSchema = z.object({
     .max(100, "CTA text can't be more than 100 characters"),
   ctaLink: z
     .string()
-    .url("CTA Link must be a valid URL")
     .trim(),
   services: z.array(
     z.object({
@@ -45,7 +44,6 @@ export const serviceValidationSchema = z.object({
         .max(100, "Service CTA text can't be more than 100 characters"),
       ctaLink: z
         .string()
-        .url("Service CTA Link must be a valid URL")
         .trim(),
     })
   ).min(1, "At least one service is required"),
