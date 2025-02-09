@@ -17,7 +17,21 @@ const admin_post_Services = catchAsync(
     });
   }
 );
+const admin_put_Services = catchAsync(
+  async (req: IServiceRequestWithFile, res) => {
+    const { id } = req.params;
+    const result = await services_db.admin_put_services_into_db(id, req.body);
+
+    sendResponse(res, {
+      statusCode: status.OK,
+      success: true,
+      message: "Service is edited successfully.",
+      data: result,
+    });
+  }
+);
 
 export const serviceController = {
   admin_post_Services,
+  admin_put_Services,
 };
