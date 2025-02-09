@@ -31,7 +31,19 @@ const admin_put_Services = catchAsync(
   }
 );
 
+const admin_delete_services = catchAsync(async(req, res)=> {
+  const {id} = req.params;
+  const result = services_db.admin_delete_services_into_db(id)
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Services deleted successfully",
+    data: result,
+  });
+})
+
 export const serviceController = {
   admin_post_Services,
   admin_put_Services,
+  admin_delete_services,
 };

@@ -18,7 +18,7 @@ const upload = getMuler({
 
 router.post("/post_services_data", upload.single("image"),validateRequest(serviceValidationSchema), serviceController.admin_post_Services)
 router.put("/put_services_data/:id", upload.single("image"),validateRequest(servicePutValidationSchema) , serviceController.admin_put_Services)
-router.delete("/delete_services_data/:id" )
+router.delete("/delete_services_data/:id", serviceController.admin_delete_services )
 router.get("/get_services_data")
 
  export const ServicesRoutes = router;
