@@ -41,9 +41,19 @@ const admin_delete_services = catchAsync(async(req, res)=> {
     data: result,
   });
 })
+const admin_get_services = catchAsync(async(req, res)=> {
+  const result = await services_db.admin_get_services_into_db(req.query)
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Services get successfully",
+    data: result,
+  });
+})
 
 export const serviceController = {
   admin_post_Services,
   admin_put_Services,
   admin_delete_services,
+  admin_get_services
 };
