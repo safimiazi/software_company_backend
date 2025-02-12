@@ -13,6 +13,11 @@ const admin_post_home_about = catchAsync(
   async (req: IHomeAboutRequestWithFile, res) => {
     const { title, description, heading ,ctaText, ctaLink} = req.body;
     const filename = req.file ? req.file.filename : null; // Check if file exists
+
+if(filename){
+  const fullPath = path.join(__dirname, "../../upload_files", filename);
+console.log("fule: ", fullPath)
+}
     const result = await homeAboutServices.admin_post_home_about_into_db({
       title,
       description,
