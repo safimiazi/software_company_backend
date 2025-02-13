@@ -10,18 +10,18 @@ export const formatResultImage = <T extends { [key: string]: any }>(
     const fieldData = fieldName ? docData[fieldName] : undefined;
 
     return {
-        ...docData,
-        [fieldName || "attachment"]: fieldData
-          ? `${config.base_url}/${(fieldData as string).replace(/\\/g, "/")}`
-          : fieldData,
-      } as T;
+      ...docData,
+      [fieldName || "attachment"]: fieldData
+        ? `${config.base_url}/${(fieldData as string).replace(/\\/g, "/")}`
+        : fieldData,
+    } as T;
   };
 
   if (Array.isArray(results)) {
     return results.map((item) => formatItem(item, fieldName));
   } else if (typeof results === "string") {
     return `${config.base_url}/${results.replace(/\\/g, "/")}`;
-} else {
+  } else {
     throw new Error("Unexpected results format");
   }
 };

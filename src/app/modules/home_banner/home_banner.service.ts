@@ -7,7 +7,6 @@ import { home_banner_searchable_fields } from "./home_banner.constant";
 import AppError from "../../errors/AppError";
 import status from "http-status";
 import fs from "fs";
-import config from "../../config";
 import { formatResultImage } from "../../utils/formatImage";
 
 // home_banner.service.ts - home_banner module
@@ -58,7 +57,7 @@ const get_home_banner_into_db = async (query: Record<string, unknown>) => {
     .paginate()
     .fields();
 
-  let result = await home_banner_query.modelQuery;
+  let result: any = await home_banner_query.modelQuery;
   result = formatResultImage(result, "image");
   console.log(result);
   const meta = await home_banner_query.countTotal();
@@ -78,9 +77,11 @@ const home_banner_data_delete_db = async (id: string) => {
     }
 
     // Step 2: Get the image file name
-    const file_name = isExist.image;
+    const file_name = isExist?.image
+      ? isExist.image.match(/[^\\]+$/)?.[0]
+      : undefined;
     const filePath = file_name
-      ? path.join(__dirname, "../../upload_files", file_name)
+      ? path.join(__dirname, "../../../../uploads", file_name)
       : null;
 
     // Step 3: Delete the file from the server (if it exists)
