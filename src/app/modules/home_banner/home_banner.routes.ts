@@ -31,9 +31,5 @@ router.get(
   "/get_home_page_banner_data",
   homeBannerControllers.get_home_banner_data
 );
-router.get(
-  "/get_home_page_banner_images/:id",
-  homeBannerControllers.get_home_banner_images
-);
 
 export const homeBannerRoutes = router;
