@@ -13,8 +13,6 @@ const admin_post_home_banner = catchAsync(
   async (req: IHomeBannerRequestWithFile, res) => {
     const { title, description, ctaText, ctaLink } = req.body;
     const filePath = req.file ? req.file.path : undefined;
-
-console.log("hi", req.file)
     const result = await homeBannerServices.admin_post_home_banner_into_db({
       title,
       description,
