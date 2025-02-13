@@ -17,6 +17,7 @@ router.post(
   configurableCompression("jpeg", 60),
   homeAboutControllers.admin_post_home_about
 );
+
 router.put(
   "/put_home_about_data/:id",
   uploadService.single("image"),
