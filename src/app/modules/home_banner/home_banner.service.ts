@@ -7,6 +7,8 @@ import { home_banner_searchable_fields } from "./home_banner.constant";
 import AppError from "../../errors/AppError";
 import status from "http-status";
 import fs from "fs";
+import config from "../../config";
+import { formatResultImage } from "../../utils/formatImage";
 
 // home_banner.service.ts - home_banner module
 const admin_post_home_banner_into_db = async ({
@@ -14,14 +16,14 @@ const admin_post_home_banner_into_db = async ({
   description,
   ctaText,
   ctaLink,
-  filename,
+  image
 }: Partial<IHomeBanner>) => {
   const result = await HomeBannerModel.create({
     title,
     description,
     ctaText,
     ctaLink,
-    image: filename,
+    image,
   });
 
   return result;
@@ -56,7 +58,12 @@ const get_home_banner_into_db = async (query: Record<string, unknown>) => {
     .paginate()
     .fields();
 
-  const result = await home_banner_query.modelQuery;
+  let result = await home_banner_query.modelQuery;
+  result = formatResultImage(
+    result,
+    "image"
+  );
+  console.log(result)
   const meta = await home_banner_query.countTotal();
   return {
     result,

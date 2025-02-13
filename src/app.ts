@@ -5,15 +5,26 @@ import router from "./app/routes";
 import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 import notFound from "./app/middlewares/notFound";
 import cookieParser from "cookie-parser";
+import path from "path";
+import fs from "fs";
 // parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
 
+
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:3000"],
+    origin: (origin, callback) => {
+      if (origin) {
+        callback(null, origin);
+      } else {
+        callback(null, "*");
+      }
+    },
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
@@ -22,10 +33,16 @@ app.use(cookieParser());
 
 app.use("/api/v1", router);
 
+const uploadsPath = path.resolve("uploads");
+
+if (!fs.existsSync(uploadsPath)) {
+  fs.mkdirSync(uploadsPath)}
+
+app.use("/uploads", express.static(uploadsPath));
+
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
 });
-
 // Not Found Middleware
 app.use(notFound);
 
