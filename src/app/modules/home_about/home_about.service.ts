@@ -14,14 +14,20 @@ const admin_post_home_about_into_db = async ({
   title,
   description,
   heading,
-  ctaText, ctaLink,
+  ctaText,
+  ctaLink,
   filename,
 }: Partial<IHomeAbout>) => {
-    
+  const isExist = await HomeAboutModel.find();
+  if (isExist) {
+    throw new Error("About already exist, you can not create more than one");
+  }
+
   const result = await HomeAboutModel.create({
     title,
     description,
-    ctaText, ctaLink,
+    ctaText,
+    ctaLink,
     heading,
     image: filename,
   });
@@ -32,7 +38,8 @@ const admin_put_home_about_into_db = async ({
   id,
   title,
   description,
-  ctaText, ctaLink,
+  ctaText,
+  ctaLink,
   heading,
   filename,
 }: any) => {
@@ -42,7 +49,8 @@ const admin_put_home_about_into_db = async ({
       title,
       description,
       heading,
-      ctaText, ctaLink,
+      ctaText,
+      ctaLink,
       image: filename,
     }
   );
@@ -77,32 +85,31 @@ const get_home_about_image_into_db = async (id: string) => {
 };
 
 const home_about_data_delete_db = async (id: string) => {
- try {
-   // Step 1: Check if the banner exists in the database
-   const isExist = await HomeAboutModel.findOne({ _id: id });
+  try {
+    // Step 1: Check if the banner exists in the database
+    const isExist = await HomeAboutModel.findOne({ _id: id });
 
-   if (!isExist) {
-     throw new AppError(status.NOT_FOUND, "Home about not found");
-   }
- 
-   // Step 2: Get the image file name
-   const file_name = isExist.image;
-   const filePath = file_name
-     ? path.join(__dirname, "../../upload_files", file_name)
-     : null;
- 
-   // Step 3: Delete the file from the server (if it exists)
-   if (filePath && fs.existsSync(filePath)) {
-     fs.unlinkSync(filePath);
-   }
- 
-   // Step 4: Delete the home banner from the database
-   await HomeAboutModel.deleteOne({ _id: id });
-   return;
-  
- } catch (error: any) {
-  throw new Error(error)
- }
+    if (!isExist) {
+      throw new AppError(status.NOT_FOUND, "Home about not found");
+    }
+
+    // Step 2: Get the image file name
+    const file_name = isExist.image;
+    const filePath = file_name
+      ? path.join(__dirname, "../../upload_files", file_name)
+      : null;
+
+    // Step 3: Delete the file from the server (if it exists)
+    if (filePath && fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
+    // Step 4: Delete the home banner from the database
+    await HomeAboutModel.deleteOne({ _id: id });
+    return;
+  } catch (error: any) {
+    throw new Error(error);
+  }
 };
 
 export const homeAboutServices = {
