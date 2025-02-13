@@ -11,16 +11,16 @@ import HomeAboutModel from "./home_about.model";
 
 const admin_post_home_about = catchAsync(
   async (req: IHomeAboutRequestWithFile, res) => {
-    const { title, description, heading ,ctaText, ctaLink} = req.body;
+    const { title, description, heading, ctaText, ctaLink } = req.body;
     const filePath = req.file ? req.file.path : undefined;
-
 
     const result = await homeAboutServices.admin_post_home_about_into_db({
       title,
       description,
       heading,
-      ctaText, ctaLink,
-      filename : filePath,
+      ctaText,
+      ctaLink,
+      filename: filePath,
     });
 
     sendResponse(res, {
@@ -33,8 +33,8 @@ const admin_post_home_about = catchAsync(
 );
 const admin_put_home_about = catchAsync(
   async (req: IHomeAboutRequestWithFile, res) => {
-    const { title, description,heading ,ctaText, ctaLink} = req.body;
-    const new_file_name = req.file ? req.file.filename : null; // নতুন ফাইল থাকলে সেট করো
+    const { title, description, heading, ctaText, ctaLink } = req.body;
+    const new_file_path = req.file ? req.file.path : undefined; // নতুন ফাইল থাকলে সেট করো
     const { id } = req.params;
 
     // ID দিয়ে ডাটাবেজ থেকে ব্যানার খোঁজা
@@ -43,13 +43,21 @@ const admin_put_home_about = catchAsync(
     // যদি ব্যানার পাওয়া যায়
     if (findExistingDataById) {
       // পুরানো ফাইলের নাম বের করো
-      const old_file_name = findExistingDataById.image;
+
+      const old_file_name = findExistingDataById?.image
+        ? findExistingDataById.image.match(/[^\\]+$/)?.[0]
+        : undefined;
+
       const old_file_path = old_file_name
-        ? path.join(__dirname, "../../upload_files", old_file_name)
+        ? path.join(__dirname, "../../../../uploads", old_file_name)
         : null;
 
       // যদি নতুন ফাইল থাকে, তাহলে পুরানো ফাইল ডিলিট করো
-      if (new_file_name !== null && old_file_path && fs.existsSync(old_file_path)) {
+      if (
+        new_file_path !== null &&
+        old_file_path &&
+        fs.existsSync(old_file_path)
+      ) {
         fs.unlinkSync(old_file_path);
       }
     }
@@ -59,9 +67,10 @@ const admin_put_home_about = catchAsync(
       id,
       title,
       description,
-      ctaText, ctaLink,
+      ctaText,
+      ctaLink,
       heading,
-      filename: new_file_name || findExistingDataById?.image, // নতুন ইমেজ না থাকলে আগেরটাই রাখো
+      filename: new_file_path || findExistingDataById?.image, // নতুন ইমেজ না থাকলে আগেরটাই রাখো
     });
 
     sendResponse(res, {
@@ -89,21 +98,21 @@ const get_home_about_images = catchAsync(async (req, res) => {
   res.sendFile(result);
 });
 
-const admin_delete_home_about = catchAsync(async(req, res)=> {
-  const {id} = req.params;
-  const result = homeAboutServices.home_about_data_delete_db(id)
+const admin_delete_home_about = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = homeAboutServices.home_about_data_delete_db(id);
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
     message: "Home about deleted successfully",
     data: result,
   });
-})
+});
 
 export const homeAboutControllers = {
   admin_post_home_about,
   get_home_about_data,
   get_home_about_images,
   admin_put_home_about,
-  admin_delete_home_about
+  admin_delete_home_about,
 };

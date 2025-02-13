@@ -19,7 +19,8 @@ const admin_post_home_about_into_db = async ({
   filename,
 }: Partial<IHomeAbout>) => {
   const isExist = await HomeAboutModel.find();
-  if (isExist) {
+  console.log(isExist)
+  if (isExist.length > 0) {
     throw new Error("About already exist, you can not create more than one");
   }
 
