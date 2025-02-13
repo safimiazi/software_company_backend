@@ -32,8 +32,9 @@ const admin_post_home_banner = catchAsync(
 const admin_put_home_banner = catchAsync(
   async (req: IHomeBannerRequestWithFile, res) => {
     const { title, description, ctaText, ctaLink } = req.body;
-    const new_file_name = req.file ? req.file.filename : null; // নতুন ফাইল থাকলে সেট করো
+    const new_file_path =req.file ? req.file.path : undefined;
     const { id } = req.params;
+
 
     // ID দিয়ে ডাটাবেজ থেকে ব্যানার খোঁজা
     const findExistingDataById = await HomeBannerModel.findOne({ _id: id });
@@ -41,13 +42,15 @@ const admin_put_home_banner = catchAsync(
     // যদি ব্যানার পাওয়া যায়
     if (findExistingDataById) {
       // পুরানো ফাইলের নাম বের করো
-      const old_file_name = findExistingDataById.image;
+
+      const old_file_name =       findExistingDataById?.image ? findExistingDataById.image.match(/[^\\]+$/)?.[0] : undefined;
+
       const old_file_path = old_file_name
-        ? path.join(__dirname, "../../upload_files", old_file_name)
+        ? path.join(__dirname, "../../../../uploads", old_file_name)
         : null;
 
       // যদি নতুন ফাইল থাকে, তাহলে পুরানো ফাইল ডিলিট করো
-      if (new_file_name !== null && old_file_path && fs.existsSync(old_file_path)) {
+      if (new_file_path !== null && old_file_path && fs.existsSync(old_file_path)) {
         fs.unlinkSync(old_file_path);
       }
     }
@@ -59,7 +62,7 @@ const admin_put_home_banner = catchAsync(
       description,
       ctaText,
       ctaLink,
-      filename: new_file_name || findExistingDataById?.image, // নতুন ইমেজ না থাকলে আগেরটাই রাখো
+      filename: new_file_path || findExistingDataById?.image, // নতুন ইমেজ না থাকলে আগেরটাই রাখো
     });
 
     sendResponse(res, {
