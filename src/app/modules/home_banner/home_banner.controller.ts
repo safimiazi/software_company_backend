@@ -18,7 +18,7 @@ const admin_post_home_banner = catchAsync(
       description,
       ctaText,
       ctaLink,
-      image: filePath
+      image: filePath,
     });
 
     sendResponse(res, {
@@ -32,9 +32,8 @@ const admin_post_home_banner = catchAsync(
 const admin_put_home_banner = catchAsync(
   async (req: IHomeBannerRequestWithFile, res) => {
     const { title, description, ctaText, ctaLink } = req.body;
-    const new_file_path =req.file ? req.file.path : undefined;
+    const new_file_path = req.file ? req.file.path : undefined;
     const { id } = req.params;
-
 
     // ID দিয়ে ডাটাবেজ থেকে ব্যানার খোঁজা
     const findExistingDataById = await HomeBannerModel.findOne({ _id: id });
@@ -43,14 +42,20 @@ const admin_put_home_banner = catchAsync(
     if (findExistingDataById) {
       // পুরানো ফাইলের নাম বের করো
 
-      const old_file_name =       findExistingDataById?.image ? findExistingDataById.image.match(/[^\\]+$/)?.[0] : undefined;
+      const old_file_name = findExistingDataById?.image
+        ? findExistingDataById.image.match(/[^\\]+$/)?.[0]
+        : undefined;
 
       const old_file_path = old_file_name
         ? path.join(__dirname, "../../../../uploads", old_file_name)
         : null;
 
       // যদি নতুন ফাইল থাকে, তাহলে পুরানো ফাইল ডিলিট করো
-      if (new_file_path !== null && old_file_path && fs.existsSync(old_file_path)) {
+      if (
+        new_file_path !== null &&
+        old_file_path &&
+        fs.existsSync(old_file_path)
+      ) {
         fs.unlinkSync(old_file_path);
       }
     }
@@ -84,27 +89,21 @@ const get_home_banner_data = catchAsync(async (req, res) => {
     data: result,
   });
 });
-const get_home_banner_images = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const result = await homeBannerServices.get_home_banner_image_into_db(id);
-  res.sendFile(result);
-});
 
-const admin_delete_home_banner = catchAsync(async(req, res)=> {
-  const {id} = req.params;
-  const result = homeBannerServices.home_banner_data_delete_db(id)
+const admin_delete_home_banner = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = homeBannerServices.home_banner_data_delete_db(id);
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
     message: "Home banner deleted successfully",
     data: result,
   });
-})
+});
 
 export const homeBannerControllers = {
   admin_post_home_banner,
   get_home_banner_data,
-  get_home_banner_images,
   admin_put_home_banner,
-  admin_delete_home_banner
+  admin_delete_home_banner,
 };
