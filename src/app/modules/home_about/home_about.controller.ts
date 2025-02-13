@@ -12,18 +12,15 @@ import HomeAboutModel from "./home_about.model";
 const admin_post_home_about = catchAsync(
   async (req: IHomeAboutRequestWithFile, res) => {
     const { title, description, heading ,ctaText, ctaLink} = req.body;
-    const filename = req.file ? req.file.filename : null; // Check if file exists
+    const filePath = req.file ? req.file.path : undefined;
 
-if(filename){
-  const fullPath = path.join(__dirname, "../../upload_files", filename);
-console.log("fule: ", fullPath)
-}
+
     const result = await homeAboutServices.admin_post_home_about_into_db({
       title,
       description,
       heading,
       ctaText, ctaLink,
-      filename,
+      filename : filePath,
     });
 
     sendResponse(res, {

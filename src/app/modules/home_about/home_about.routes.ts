@@ -12,8 +12,8 @@ const { configurableCompression } = photoComposure();
 
 router.post(
   "/post_home_about_data",
-  validateRequest(HomeAboutValidationSchema),
   uploadService.single("image"),
+  validateRequest(HomeAboutValidationSchema),
   configurableCompression("jpeg", 60),
   homeAboutControllers.admin_post_home_about
 );
