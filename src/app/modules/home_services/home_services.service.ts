@@ -50,9 +50,6 @@ const admin_delete_services_into_db = async (id: string) => {
       throw new AppError(status.NOT_FOUND, "Services not found");
     }
 
-    if (!isExist) {
-      throw new AppError(status.NOT_FOUND, "Home banner not found");
-    }
 
     // Step 2: Get the image file name
     const file_name = isExist?.image
