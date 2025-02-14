@@ -2,7 +2,10 @@
 import express from "express";
 import path from "path";
 import { getMuler } from "../../middlewares/multer";
-import { servicePutValidationSchema, serviceValidationSchema } from "./home_services.validation";
+import {
+  servicePutValidationSchema,
+  serviceValidationSchema,
+} from "./home_services.validation";
 import { validateRequest } from "../../middlewares/validateRequest";
 import { serviceController } from "./home_services.controller";
 const router = express.Router();
@@ -15,10 +18,22 @@ const upload = getMuler({
   images: "svg",
 });
 
+router.post(
+  "/post_services_data",
+  upload.single("image"),
+  validateRequest(serviceValidationSchema),
+  serviceController.admin_post_Services
+);
+router.put(
+  "/put_services_data/:id",
+  upload.single("image"),
+  validateRequest(servicePutValidationSchema),
+  serviceController.admin_put_Services
+);
+router.delete(
+  "/delete_services_data/:id",
+  serviceController.admin_delete_services
+);
+router.get("/get_services_data", serviceController.admin_get_services);
 
-router.post("/post_services_data", upload.single("image"),validateRequest(serviceValidationSchema), serviceController.admin_post_Services)
-router.put("/put_services_data/:id", upload.single("image"),validateRequest(servicePutValidationSchema) , serviceController.admin_put_Services)
-router.delete("/delete_services_data/:id", serviceController.admin_delete_services )
-router.get("/get_services_data", serviceController.admin_get_services)
-
- export const ServicesRoutes = router;
+export const ServicesRoutes = router;
