@@ -74,16 +74,7 @@ const get_home_about_into_db = async (query: Record<string, unknown>) => {
     meta,
   };
 };
-const get_home_about_image_into_db = async (id: string) => {
-  const result = await HomeAboutModel.findOne({ _id: id });
-  const image = result?.image as string;
-  const filePath = path.join(
-    __dirname,
-    "../../upload_files", // Adjust the path based on your project structure
-    image
-  );
-  return filePath;
-};
+
 
 const home_about_data_delete_db = async (id: string) => {
   try {
@@ -116,7 +107,6 @@ const home_about_data_delete_db = async (id: string) => {
 export const homeAboutServices = {
   admin_post_home_about_into_db,
   get_home_about_into_db,
-  get_home_about_image_into_db,
   admin_put_home_about_into_db,
   home_about_data_delete_db,
 };

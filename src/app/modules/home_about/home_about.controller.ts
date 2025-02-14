@@ -92,11 +92,7 @@ const get_home_about_data = catchAsync(async (req, res) => {
     data: result,
   });
 });
-const get_home_about_images = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const result = await homeAboutServices.get_home_about_image_into_db(id);
-  res.sendFile(result);
-});
+
 
 const admin_delete_home_about = catchAsync(async (req, res) => {
   const { id } = req.params;
@@ -112,7 +108,6 @@ const admin_delete_home_about = catchAsync(async (req, res) => {
 export const homeAboutControllers = {
   admin_post_home_about,
   get_home_about_data,
-  get_home_about_images,
   admin_put_home_about,
   admin_delete_home_about,
 };

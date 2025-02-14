@@ -33,9 +33,6 @@ router.get(
   "/get_home_page_about_data",
   homeAboutControllers.get_home_about_data
 );
-router.get(
-  "/get_home_page_about_images/:id",
-  homeAboutControllers.get_home_about_images
-);
+
 
 export const homeAboutRoutes = router;

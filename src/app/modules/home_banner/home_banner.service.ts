@@ -59,7 +59,6 @@ const get_home_banner_into_db = async (query: Record<string, unknown>) => {
 
   let result: any = await home_banner_query.modelQuery;
   result = formatResultImage(result, "image");
-  console.log(result);
   const meta = await home_banner_query.countTotal();
   return {
     result,
