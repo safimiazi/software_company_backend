@@ -7,8 +7,16 @@ import { services_db } from "./home_services.service";
 // home_services.controller.ts - home_services module
 const admin_post_Services = catchAsync(
   async (req: IServiceRequestWithFile, res) => {
-    
-    const result = await services_db.admin_post_services_into_db(req.body);
+    const { title, description, ctaText, ctaLink } = req.body;
+    const filePath = req.file ? req.file.path : undefined;
+
+    const result = await services_db.admin_post_services_into_db({
+      title,
+      description,
+      ctaText,
+      ctaLink,
+      image: filePath,
+    });
 
     sendResponse(res, {
       statusCode: status.OK,
@@ -32,29 +40,29 @@ const admin_put_Services = catchAsync(
   }
 );
 
-const admin_delete_services = catchAsync(async(req, res)=> {
-  const {id} = req.params;
-  const result = services_db.admin_delete_services_into_db(id)
+const admin_delete_services = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = services_db.admin_delete_services_into_db(id);
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
     message: "Services deleted successfully",
     data: result,
   });
-})
-const admin_get_services = catchAsync(async(req, res)=> {
-  const result = await services_db.admin_get_services_into_db(req.query)
+});
+const admin_get_services = catchAsync(async (req, res) => {
+  const result = await services_db.admin_get_services_into_db(req.query);
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
     message: "Services get successfully",
     data: result,
   });
-})
+});
 
 export const serviceController = {
   admin_post_Services,
   admin_put_Services,
   admin_delete_services,
-  admin_get_services
+  admin_get_services,
 };
