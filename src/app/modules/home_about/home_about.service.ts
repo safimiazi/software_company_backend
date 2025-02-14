@@ -8,6 +8,7 @@ import fs from "fs";
 import HomeAboutModel from "./home_about.model";
 import { home_about_searchable_fields } from "./home_about.constant";
 import { IHomeAbout } from "./home_about.interface";
+import { formatResultImage } from "../../utils/formatImage";
 
 // home_banner.service.ts - home_banner module
 const admin_post_home_about_into_db = async ({
@@ -19,7 +20,7 @@ const admin_post_home_about_into_db = async ({
   filename,
 }: Partial<IHomeAbout>) => {
   const isExist = await HomeAboutModel.find();
-  console.log(isExist)
+  console.log(isExist);
   if (isExist.length > 0) {
     throw new Error("About already exist, you can not create more than one");
   }
@@ -67,14 +68,14 @@ const get_home_about_into_db = async (query: Record<string, unknown>) => {
     .paginate()
     .fields();
 
-  const result = await home_about_query.modelQuery;
+  let result: any = await home_about_query.modelQuery;
+  result = formatResultImage(result, "image");
   const meta = await home_about_query.countTotal();
   return {
     result,
     meta,
   };
 };
-
 
 const home_about_data_delete_db = async (id: string) => {
   try {
