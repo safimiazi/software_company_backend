@@ -3,6 +3,9 @@ import sendResponse from "../../utils/sendResponse";
 import catchAsync from "../../utils/catchAsync";
 import { IServiceRequestWithFile } from "./home_services.interface";
 import { services_db } from "./home_services.service";
+import ServiceModel from "./home_services.model";
+import path from "path"
+import fs from "fs"
 
 // home_services.controller.ts - home_services module
 const admin_post_Services = catchAsync(
@@ -28,8 +31,41 @@ const admin_post_Services = catchAsync(
 );
 const admin_put_Services = catchAsync(
   async (req: IServiceRequestWithFile, res) => {
+
+    const { title, description, ctaText, ctaLink } = req.body;
+    const new_file_path = req.file ? req.file.path : undefined;
     const { id } = req.params;
-    const result = await services_db.admin_put_services_into_db(id, req.body);
+
+    // ID দিয়ে ডাটাবেজ থেকে ব্যানার খোঁজা
+    const findExistingDataById = await ServiceModel.findOne({ _id: id });
+
+    // যদি ব্যানার পাওয়া যায়
+    if (findExistingDataById) {
+      // পুরানো ফাইলের নাম বের করো
+
+      const old_file_name = findExistingDataById?.image
+        ? findExistingDataById.image.match(/[^\\]+$/)?.[0]
+        : undefined;
+
+      const old_file_path = old_file_name
+        ? path.join(__dirname, "../../../../uploads", old_file_name)
+        : null;
+
+      // যদি নতুন ফাইল থাকে, তাহলে পুরানো ফাইল ডিলিট করো
+      if (
+        new_file_path !== null &&
+        old_file_path &&
+        fs.existsSync(old_file_path)
+      ) {
+        fs.unlinkSync(old_file_path);
+      }
+    }
+    const result = await services_db.admin_put_services_into_db({ id,
+      title,
+      description,
+      ctaText,
+      ctaLink,
+      image: new_file_path || findExistingDataById?.image,});
 
     sendResponse(res, {
       statusCode: status.OK,

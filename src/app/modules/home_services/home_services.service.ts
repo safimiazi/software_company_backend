@@ -1,9 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import status from "http-status";
 import { IServices } from "./home_services.interface";
 import ServiceModel from "./home_services.model";
 import AppError from "../../errors/AppError";
 import QueryBuilder from "../../builder/QueryBuilder";
 import { services_searchable_fields } from "./home_services.constant";
+import { formatResultImage } from "../../utils/formatImage";
+import path from "path";
+import fs from "fs";
 
 // home_services.service.ts - home_services module
 const admin_post_services_into_db = async (data: Partial<IServices>) => {
@@ -19,12 +23,9 @@ const admin_post_services_into_db = async (data: Partial<IServices>) => {
     }
   }
 };
-const admin_put_services_into_db = async (
-  id: string,
-  data: Partial<IServices>
-) => {
+const admin_put_services_into_db = async (data: any) => {
   try {
-    const result = await ServiceModel.findByIdAndUpdate(id, data, {
+    const result = await ServiceModel.updateOne({_id:data.id}, data, {
       new: true,
     });
     if (!result) {
@@ -49,16 +50,22 @@ const admin_delete_services_into_db = async (id: string) => {
       throw new AppError(status.NOT_FOUND, "Services not found");
     }
 
-    // Step 2: Get the image file name
-    // const file_name = isExist.image;
-    // const filePath = file_name
-    //   ? path.join(__dirname, "../../upload_files", file_name)
-    //   : null;
+    if (!isExist) {
+      throw new AppError(status.NOT_FOUND, "Home banner not found");
+    }
 
-    // // Step 3: Delete the file from the server (if it exists)
-    // if (filePath && fs.existsSync(filePath)) {
-    //   fs.unlinkSync(filePath);
-    // }
+    // Step 2: Get the image file name
+    const file_name = isExist?.image
+      ? isExist.image.match(/[^\\]+$/)?.[0]
+      : undefined;
+    const filePath = file_name
+      ? path.join(__dirname, "../../../../uploads", file_name)
+      : null;
+
+    // Step 3: Delete the file from the server (if it exists)
+    if (filePath && fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
 
     // Step 4: Delete the home banner from the database
     await ServiceModel.deleteOne({ _id: id });
@@ -80,7 +87,9 @@ const admin_get_services_into_db = async (query: Record<string, unknown>) => {
       .paginate()
       .fields();
 
-    const result = await service_query.modelQuery;
+    let result: any = await service_query.modelQuery;
+    result = formatResultImage(result, "image");
+
     const meta = await service_query.countTotal();
     return {
       result,
