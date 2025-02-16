@@ -1,19 +1,19 @@
 // project.service.ts - project module
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import status from "http-status";
-import { IServices } from "./home_services.interface";
-import ServiceModel from "./home_services.model";
 import AppError from "../../errors/AppError";
 import QueryBuilder from "../../builder/QueryBuilder";
-import { services_searchable_fields } from "./home_services.constant";
 import { formatResultImage } from "../../utils/formatImage";
 import path from "path";
 import fs from "fs";
+import { IProject } from "./project.interface";
+import ProjectModel from "./project.model";
+import { project_searchable_fields } from "./project.constant";
 
-// home_services.service.ts - home_services module
-const admin_post_services_into_db = async (data: Partial<IServices>) => {
+const post_project_into_db = async (data: Partial<IProject>) => {
   try {
-    const result = await ServiceModel.create(data);
+
+    const result = await ProjectModel.create(data);
 
     return result;
   } catch (error: unknown) {
@@ -24,13 +24,13 @@ const admin_post_services_into_db = async (data: Partial<IServices>) => {
     }
   }
 };
-const admin_put_services_into_db = async (data: any) => {
+const put_project_into_db = async (data: any) => {
   try {
-    const result = await ServiceModel.updateOne({_id:data.id}, data, {
+    const result = await ProjectModel.updateOne({_id:data.id}, data, {
       new: true,
     });
     if (!result) {
-      throw new Error("Service not found.");
+      throw new Error("Project not found.");
     }
     return result;
   } catch (error) {
@@ -42,13 +42,13 @@ const admin_put_services_into_db = async (data: any) => {
   }
 };
 
-const admin_delete_services_into_db = async (id: string) => {
+const delete_project_into_db = async (id: string) => {
   try {
     // Step 1: Check if the banner exists in the database
-    const isExist = await ServiceModel.findOne({ _id: id });
+    const isExist = await ProjectModel.findOne({ _id: id });
 
     if (!isExist) {
-      throw new AppError(status.NOT_FOUND, "Services not found");
+      throw new AppError(status.NOT_FOUND, "project not found");
     }
 
 
@@ -66,7 +66,7 @@ const admin_delete_services_into_db = async (id: string) => {
     }
 
     // Step 4: Delete the home banner from the database
-    await ServiceModel.deleteOne({ _id: id });
+    await ProjectModel.deleteOne({ _id: id });
     return;
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -76,10 +76,10 @@ const admin_delete_services_into_db = async (id: string) => {
     }
   }
 };
-const admin_get_services_into_db = async (query: Record<string, unknown>) => {
+const get_project_into_db = async (query: Record<string, unknown>) => {
   try {
-    const service_query = new QueryBuilder(ServiceModel.find(), query)
-      .search(services_searchable_fields)
+    const service_query = new QueryBuilder(ProjectModel.find(), query)
+      .search(project_searchable_fields)
       .filter()
       .sort()
       .paginate()
@@ -103,8 +103,8 @@ const admin_get_services_into_db = async (query: Record<string, unknown>) => {
 };
 
 export const services_db = {
-  admin_post_services_into_db,
-  admin_put_services_into_db,
-  admin_delete_services_into_db,
-  admin_get_services_into_db,
+  post_project_into_db,
+  put_project_into_db,
+  delete_project_into_db,
+  get_project_into_db
 };

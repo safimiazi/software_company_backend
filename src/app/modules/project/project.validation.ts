@@ -1,48 +1,15 @@
-// project.validation.ts - project module
-// home_services.validation.ts - home_services module
 import { z } from "zod";
 
-export const serviceValidationSchema = z.object({
-  title: z
-    .string()
-    .min(3, "Title must be at least 3 characters")
-    .trim()
-    .max(100, "Title can't be more than 100 characters"),
-  description: z
-    .string()
-    .min(10, "Description must be at least 10 characters")
-    .trim()
-    .max(500, "Description can't be more than 500 characters"),
-
-  ctaText: z
-    .string()
-    .min(3, "CTA text must be at least 3 characters")
-    .trim()
-    .max(100, "CTA text can't be more than 100 characters"),
-  ctaLink: z.string().trim(),
-});
-
-export const servicePutValidationSchema = z.object({
-  title: z
-    .string()
-    .min(3, "Title must be at least 3 characters")
-    .max(100, "Title can't be more than 100 characters")
-    .trim()
-    .optional(),
-
-  description: z
-    .string()
-    .min(10, "Description must be at least 10 characters")
-    .max(500, "Description can't be more than 500 characters")
-    .trim()
-    .optional(),
-
-  ctaText: z
-    .string()
-    .min(3, "CTA text must be at least 3 characters")
-    .max(100, "CTA text can't be more than 100 characters")
-    .trim()
-    .optional(),
-
-  ctaLink: z.string().trim().optional(),
+export const projectValidationSchema = z.object({
+  title: z.string().min(3, "Title must be at least 3 characters long"),
+  description: z.string().min(10, "Description must be at least 10 characters long"),
+  image: z.string().url("Invalid image URL").optional(),
+  technologies: z.array(z.string()).nonempty("At least one technology is required"),
+  stars: z.number().min(0, "Stars must be at least 0").max(5, "Stars cannot be more than 5"),
+  demoUrl: z.string().url("Invalid demo URL").optional(),
+  githubUrl: z.string().url("Invalid GitHub URL").optional(),
+  features: z.array(z.string()).nonempty("At least one feature is required"),
+  overview: z.string().min(10, "Overview must be at least 10 characters long"),
+  challenges: z.array(z.string()).nonempty("At least one challenge is required"),
+  impact: z.array(z.string()).nonempty("At least one impact point is required"),
 });
