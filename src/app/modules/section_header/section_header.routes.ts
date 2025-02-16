@@ -22,4 +22,4 @@ router.get(
   sectionHeaderController.admin_get_section_header
 );
 
-export const ServicesRoutes = router;
+export const SectionHeaderRoutes = router;
