@@ -4,6 +4,7 @@ import { homeBannerRoutes } from "../modules/home_banner/home_banner.routes";
 import { homeAboutRoutes } from "../modules/home_about/home_about.routes";
 import { ServicesRoutes } from "../modules/home_services/home_services.routes";
 import { SectionHeaderRoutes } from "../modules/section_header/section_header.routes";
+import { projectRoutes } from "../modules/project/project.routes";
 
 const router = Router();
 
@@ -23,6 +24,10 @@ const moduleRoutes = [
   {
     path: "/services",
     route: ServicesRoutes,
+  },
+  {
+    path: "/project",
+    route: projectRoutes,
   },
   {
     path: "/section_header",
