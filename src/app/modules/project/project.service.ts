@@ -102,7 +102,7 @@ const get_project_into_db = async (query: Record<string, unknown>) => {
   }
 };
 
-export const services_db = {
+export const Project_services = {
   post_project_into_db,
   put_project_into_db,
   delete_project_into_db,
