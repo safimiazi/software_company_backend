@@ -5,7 +5,7 @@ export const projectValidationSchema = z.object({
   description: z.string().min(10, "Description must be at least 10 characters long"),
   image: z.string().url("Invalid image URL").optional(),
   technologies: z.array(z.string()).nonempty("At least one technology is required"),
-  stars: z.number().min(0, "Stars must be at least 0").max(5, "Stars cannot be more than 5"),
+  stars: z.string().min(0, "Stars must be at least 0").max(5, "Stars cannot be more than 5"),
   demoUrl: z.string().url("Invalid demo URL").optional(),
   githubUrl: z.string().url("Invalid GitHub URL").optional(),
   features: z.array(z.string()).nonempty("At least one feature is required"),
