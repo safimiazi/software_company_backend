@@ -1,33 +1,25 @@
 // project.routes.ts - project module
-// home_services.routes.ts - home_services module
 import express from "express";
-import {
-  servicePutValidationSchema,
-  serviceValidationSchema,
-} from "./home_services.validation";
-import { validateRequest } from "../../middlewares/validateRequest";
-import { serviceController } from "./home_services.controller";
+
 import { uploadService } from "../upload/upload";
+import { projectValidationSchema } from "./project.validation";
+import { projectController } from "./project.controller";
+import { validateRequest } from "../../middlewares/validateRequest";
 const router = express.Router();
 
-
-
 router.post(
-  "/post_services_data",
+  "/post_project_data",
   uploadService.single("image"),
-  validateRequest(serviceValidationSchema),
-  serviceController.admin_post_Services
+  validateRequest(projectValidationSchema),
+  projectController.post_project
 );
 router.put(
-  "/put_services_data/:id",
+  "/put_project_data/:id",
   uploadService.single("image"),
-  validateRequest(servicePutValidationSchema),
-  serviceController.admin_put_Services
+  validateRequest(projectValidationSchema),
+  projectController.put_project
 );
-router.delete(
-  "/delete_services_data/:id",
-  serviceController.admin_delete_services
-);
-router.get("/get_services_data", serviceController.admin_get_services);
+router.delete("/delete_project_data/:id", projectController.delete_project);
+router.get("/get_project_data", projectController.get_project);
 
-export const ServicesRoutes = router;
+export const projectRoutes = router;

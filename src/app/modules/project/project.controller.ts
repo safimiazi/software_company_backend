@@ -85,7 +85,7 @@ const get_project = catchAsync(async (req, res) => {
   });
 });
 
-export const serviceController = {
+export const projectController = {
   post_project,
   put_project,
   delete_project,
