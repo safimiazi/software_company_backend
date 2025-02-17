@@ -6,7 +6,7 @@ export  interface ITestimonial {
     position: string;
   }
   
-  export interface IProject {
+  export interface ICaseStudy {
     title: string;
     client: string;
     category: string;
