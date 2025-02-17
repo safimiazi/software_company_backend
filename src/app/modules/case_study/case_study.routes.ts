@@ -4,7 +4,10 @@ import express from "express";
 import { uploadService } from "../upload/upload";
 import { validateRequest } from "../../middlewares/validateRequest";
 import { photoComposure } from "../../middlewares/photoComposure";
-import { CaseStudyValidationSchema } from "./case_study.validation";
+import {
+  CaseStudyEditValidationSchema,
+  CaseStudyValidationSchema,
+} from "./case_study.validation";
 import { CaseStudyController } from "./case_study.controller";
 const router = express.Router();
 const { configurableCompression } = photoComposure();
