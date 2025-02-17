@@ -22,10 +22,13 @@ router.put(
   uploadService.single("image"),
   configurableCompression("jpeg", 60),
 
-  validateRequest(CaseStudyValidationSchema),
+  validateRequest(CaseStudyEditValidationSchema),
   CaseStudyController.put_case_study
 );
-router.delete("/delete_case_study_data/:id", CaseStudyController.delete_case_study);
+router.delete(
+  "/delete_case_study_data/:id",
+  CaseStudyController.delete_case_study
+);
 router.get("/get_case_study_data", CaseStudyController.get_case_study);
 
 export const CaseStudyRoutes = router;
