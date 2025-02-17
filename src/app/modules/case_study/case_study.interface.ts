@@ -1,4 +1,7 @@
 // case_study.interface.ts - case_study module
+
+import { Request } from "express";
+
 // Interface for TypeScript
 export  interface ITestimonial {
     quote: string;
@@ -19,3 +22,7 @@ export  interface ITestimonial {
     testimonial: ITestimonial;
   }
   
+  export interface ICaseStudyRequestWithFile extends Request {
+    body: ICaseStudy;
+    file?: Express.Multer.File;
+  }
