@@ -5,6 +5,7 @@ import { homeAboutRoutes } from "../modules/home_about/home_about.routes";
 import { ServicesRoutes } from "../modules/home_services/home_services.routes";
 import { SectionHeaderRoutes } from "../modules/section_header/section_header.routes";
 import { projectRoutes } from "../modules/project/project.routes";
+import { CaseStudyRoutes } from "../modules/case_study/case_study.routes";
 
 const router = Router();
 
@@ -28,6 +29,10 @@ const moduleRoutes = [
   {
     path: "/project",
     route: projectRoutes,
+  },
+  {
+    path: "/case_study",
+    route: CaseStudyRoutes,
   },
   {
     path: "/section_header",
