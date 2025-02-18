@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const projectValidationSchema = z.object({
+  sectionHeader: z.string(),
   title: z.string().min(3, "Title must be at least 3 characters long"),
   description: z.string().min(10, "Description must be at least 10 characters long"),
   image: z.string().url("Invalid image URL").optional(),

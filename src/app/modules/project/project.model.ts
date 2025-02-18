@@ -1,11 +1,15 @@
 import mongoose, { Schema } from "mongoose";
 import { IProject } from "./project.interface";
 
-
-
 // Define the Project Schema
 const ProjectSchema: Schema = new Schema<IProject>(
   {
+    sectionHeader: {
+      type: Schema.Types.String,
+      ref: "SectionHeader",
+      required: true,
+    }, 
+
     title: { type: String, required: true },
     description: { type: String, required: true },
     image: { type: String },
