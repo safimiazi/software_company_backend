@@ -85,7 +85,7 @@ const get_case_study_into_db = async (query: Record<string, unknown>) => {
       .paginate()
       .fields();
 
-    let result: any = await service_query.modelQuery;
+    let result: any = await service_query.modelQuery.populate("sectionHeader");
     result = formatResultImage(result, "image");
 
     const meta = await service_query.countTotal();

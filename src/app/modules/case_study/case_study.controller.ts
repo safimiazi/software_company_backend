@@ -11,7 +11,6 @@ import { ICaseStudyRequestWithFile } from "./case_study.interface";
 
 const post_case_study= catchAsync(async (req: ICaseStudyRequestWithFile, res) => {
   const filePath = req.file ? req.file.path : undefined;
-console.log(req.body)
   const result = await Case_study_services.post_case_study_into_db({
     ...req.body,
     image: filePath,

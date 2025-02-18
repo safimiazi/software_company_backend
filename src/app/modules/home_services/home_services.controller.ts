@@ -10,14 +10,13 @@ import fs from "fs"
 // home_services.controller.ts - home_services module
 const admin_post_Services = catchAsync(
   async (req: IServiceRequestWithFile, res) => {
-    const { title, description, ctaText, ctaLink } = req.body;
+    const { title, description, ctaText, ctaLink,sectionHeader } = req.body;
     const filePath = req.file ? req.file.path : undefined;
-
     const result = await services_db.admin_post_services_into_db({
       title,
       description,
       ctaText,
-      ctaLink,
+      ctaLink, sectionHeader,
       image: filePath,
     });
 
@@ -32,7 +31,7 @@ const admin_post_Services = catchAsync(
 const admin_put_Services = catchAsync(
   async (req: IServiceRequestWithFile, res) => {
 
-    const { title, description, ctaText, ctaLink } = req.body;
+    const { title, description, ctaText, ctaLink,  sectionHeader    } = req.body;
     const new_file_path = req.file ? req.file.path : undefined;
     const { id } = req.params;
 
@@ -64,7 +63,7 @@ const admin_put_Services = catchAsync(
       title,
       description,
       ctaText,
-      ctaLink,
+      ctaLink,sectionHeader,
       image: new_file_path || findExistingDataById?.image,});
 
     sendResponse(res, {

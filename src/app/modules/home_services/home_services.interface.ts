@@ -5,7 +5,7 @@ import { Request } from 'express';
 
 
 export interface IServices {
-  SectionHeader: string;
+  sectionHeader?: string;
   title: string;
   description: string;
   ctaText: string;

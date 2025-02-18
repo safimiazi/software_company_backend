@@ -9,6 +9,8 @@ const TestimonialSchema = new Schema<ITestimonial>({
   });
   
   const CaseStudySchema = new Schema<ICaseStudy>({
+    sectionHeader: { type: Schema.Types.String, ref: "SectionHeader", required: true }, // Linking to SectionHeader
+
     title: { type: String, required: true },
     client: { type: String, required: true },
     category: { type: String, required: true },

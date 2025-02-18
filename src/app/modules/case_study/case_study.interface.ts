@@ -11,6 +11,7 @@ export  interface ITestimonial {
   
   export interface ICaseStudy {
     title: string;
+    sectionHeader: string;
     client: string;
     category: string;
     duration: string;

@@ -5,7 +5,7 @@ import { IServices } from "./home_services.interface";
 const ServiceSchema: Schema = new Schema<IServices>(
 
   {
-    SectionHeader: {
+    sectionHeader: {
       type: Schema.Types.String,
       ref: "SectionHeader",
       required: true,
