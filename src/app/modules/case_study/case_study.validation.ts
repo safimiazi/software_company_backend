@@ -4,6 +4,8 @@ import { z } from 'zod';
 
 
 export const CaseStudyValidationSchema = z.object({
+  sectionHeader: z.string(),
+
   title: z.string().min(1, "Title is required"),
   client: z.string().min(1, "Client is required"),
   category: z.string().min(1, "Category is required"),
@@ -17,6 +19,8 @@ export const CaseStudyValidationSchema = z.object({
   "testimonial.position": z.string().min(1, "Position is required")
 });
 export const CaseStudyEditValidationSchema = z.object({
+  sectionHeader: z.string().optional(),
+
   title: z.string().min(1, "Title is required").optional(),
   client: z.string().min(1, "Client is required").optional(),
   category: z.string().min(1, "Category is required").optional(),

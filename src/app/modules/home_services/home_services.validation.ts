@@ -2,6 +2,8 @@
 import { z } from "zod";
 
 export const serviceValidationSchema = z.object({
+  sectionHeader: z.string(),
+
   title: z
     .string()
     .min(3, "Title must be at least 3 characters")
@@ -22,6 +24,7 @@ export const serviceValidationSchema = z.object({
 });
 
 export const servicePutValidationSchema = z.object({
+  sectionHeader: z.string().optional(),
   title: z
     .string()
     .min(3, "Title must be at least 3 characters")

@@ -3,7 +3,13 @@ import { IServices } from "./home_services.interface";
 
 // Define the Mongoose Schema
 const ServiceSchema: Schema = new Schema<IServices>(
+
   {
+    SectionHeader: {
+      type: Schema.Types.String,
+      ref: "SectionHeader",
+      required: true,
+    },
     title: {
       type: String,
       required: [true, "Service Title is required"],

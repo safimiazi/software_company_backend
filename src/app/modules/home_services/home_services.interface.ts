@@ -5,6 +5,7 @@ import { Request } from 'express';
 
 
 export interface IServices {
+  SectionHeader: string;
   title: string;
   description: string;
   ctaText: string;
